@@ -1,0 +1,223 @@
+{% extends 'parsing/base.html' %}
+{% load static parsing_tags %}
+{% block title %}
+    {{ city_service.city.name }} - {{ city_service.service.name }}
+{% endblock %}
+
+{% block style %}
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <link rel="stylesheet" href="{% static 'parsing/faq/css/style.css' %}">
+    <style>
+        .cd-faq__trigger {
+            color: inherit;
+        }
+    </style>
+    {% if city_service.faq and city_service.faq.questions %}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+          {% for question in city_service.faq.questions.all|slice:"3" %}
+              {
+                "@type": "Question",
+                "name": "{{ question.question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ question.answer }}"
+                }
+              }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          ]
+        }
+        </script>
+    {% endif %}
+
+    <style>
+        @media (max-width: 630px) {
+            .place {
+                flex-direction: column !important;
+            }
+
+            .place_img {
+                margin-bottom: 10px;
+                width: 100% !important;
+                min-width: auto !important;
+                height: auto !important;
+            }
+
+            .top_place_number {
+                display: none;
+            }
+
+
+        }
+    </style>
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:city_list' %}">City</a></li>
+            <li><a href="{{ city_service.city.get_absolute_url }}">{{ city_service.city.name }}</a></li>
+            <li class="is-active"><a href="#">{{ city_service.service.name }}</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h1 class="block_title" style="font-size: 22px !important; margin-bottom: 40px">
+        {% if request.user|hasGroup:'Admin' %}
+            <div class="queries_admin_button">
+                <div>
+                    <a href="{% url 'parsing:city_service_edit' city_service.pk %}"
+                       class="button is-success is-light is-outlined centered mr-1 admin_button"
+                       style="width: fit-content"><i class="fa fa-edit"></i></a>
+                    <span class="admin_button_label">EDIT</span>
+                </div>
+                <div>
+                    <a href="{% url 'parsing:city_service_edit_faq' city_service.pk %}"
+                       class="button is-warning is-light is-outlined centered mr-1 admin_button"
+                       style="width: fit-content"><i class="fa fa-question"></i></a>
+                    <span class="admin_button_label">FAQ</span>
+
+                </div>
+                <div>
+                    <a href="{% url 'parsing:city_service_reviews_uniqueize' city_service.pk %}"
+                       class="button is-info is-light is-outlined centered mr-1 admin_button"
+                       style="width: fit-content"><i class="fa fa-comment-alt"></i></a>
+                    <span class="admin_button_label">Uniqueize reviews</span>
+
+                </div>
+                <div>
+                    <a href="{% url 'parsing:city_service_preview_reviews_uniqueize' city_service.pk %}"
+                       class="button is-danger is-light is-outlined centered mr-1 admin_button"
+                       style="width: fit-content"><i class="fa fa-comment-alt"></i></a>
+                    <span class="admin_button_label">Uniqueize preview reviews</span>
+
+                </div>
+                <div>
+                    <a href="{% url 'parsing:city_service_places_generate_description' city_service.pk %}"
+                       class="button is-primary is-light is-outlined centered mr-1 admin_button"
+                       style="width: fit-content"><i class="fa fa-folder"></i></a>
+                    <span class="admin_button_label">Generate Description</span>
+
+                </div>
+                <div>
+                    <a href="{% url 'parsing:city_service_rating_edit' city_service.pk %}"
+                       class="button is-outlined mr-1 admin_button"
+                       style="display: block; width: fit-content "><i class='fa fa-star'></i></a>
+                    <span class="admin_button_label">Change rating</span>
+                </div>
+                <div>
+                    <a href="{% url 'parsing:city_service_access' city_service.pk %}"
+                       class="button is-outlined mr-1 admin_button"
+                       style="display: block; width: fit-content "><i class='fa
+                       {% if city_service.access %}fa-lock-open{% else %}fa-lock{% endif %}'></i></a>
+                    <span class="admin_button_label">Access</span>
+                </div>
+                <a href="{% url 'parsing:city_service_file' city_service.pk %}"
+                   class="button is-success mr-1">
+                        FILE
+                </a>
+                <a href="{% url 'parsing:start_custom_parser' city_service.city.slug city_service.service.slug %}"
+                   class="button is-success">
+                    {% if city_service.places_count %}
+                        RESTART
+                    {% else %}
+                        START
+                    {% endif %}
+                </a>
+            </div>
+        {% endif %}
+        {{ city_service.search_text|default:'' }}
+        <div class="mt-5" style="max-width: fit-content; width: 100%; margin: auto">
+            <div class="tabs is-middle is-centered">
+                <ul>
+                    <li {% if not archive %}class="is-active"{% endif %}>
+                        <a href="?type=open">Opened ({{ opened_count }})</a>
+                    </li>
+                    <li {% if archive %}class="is-active"{% endif %}>
+                        <a href="?type=archive">Archive({{ archived_count }})</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="queries_copy_button">
+            <a href="{% url 'parsing:places_copy' city_service.pk %}"><i class="fa fa-link"></i></a>
+            <a href="{% url 'parsing:places_copy_code' city_service.pk %}"><i class="fa fa-copy"></i></a>
+            {#            <span><i class="fa fa-copy query_clone_icon" data-query-slug="{{ query.slug }}"></i></span>#}
+        </div>
+    </h1>
+    <div class="columns is-centered">
+        <div class="column is-10">
+            {#            <h4 style="text-align: center">Description</h4>#}
+
+            <div>
+                {{ city_service.content|default:''|safe }}
+            </div>
+            <br>
+            <div>
+                {% for tag in city_service.tags.all %}
+                    <span class="tag is-medium"
+                          style="margin: 3px; background-color: grey; color: white">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="columns is-centered is-multiline">
+            {% for place in top_places %}
+                {% include 'parsing/include/place/preview_card.html' with place=place %}
+            {% empty %}
+                <span class="has-text-grey">Places not found</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% if letters %}
+        <hr>
+        <h4 class="block_title">All places</h4>
+        <div class="columns is-multiline">
+            {% for letter in letters %}
+                <div class="column is-3">
+                    <hr>
+                    <span style="color: cornflowerblue">{{ letter }}</span>
+                    {% for place in places_letter|getValue:letter|getValue:'places' %}
+                        <p style="display: flex; justify-content: space-between">
+                            <a href="{{ place.get_absolute_url }}"
+                               class="hover_link">{{ place.name }}</a>
+                            {% if request.user|hasGroup:'SuperAdmin' %}
+                                <span style="width: 5px"></span>
+                                <a href="{% url 'parsing:place_edit_archive' place.pk %}"
+                                   style=""
+                                   class="{% if place.archive %}has-text-danger{% else %}has-text-success{% endif %}">
+                                    {% if place.archive %}
+                                        <i class="fa fa-lock"></i>
+                                    {% else %}
+                                        <i class="fa fa-lock-open"></i>
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <hr>
+        <div style="color: grey">
+            <p>Total {{ places.count }} places</p>
+        </div>
+    {% endif %}
+    {% if city_service.faq %}
+        {% include 'parsing/include/faq/block.html' with questions=city_service.faq.questions %}
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'parsing/faq/js/util.js' %}"></script>
+    <script src="{% static 'parsing/faq/js/main.js' %}"></script>
+    <script src="{% static 'parsing/js/copy_place.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Edit blog
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+
+{% block content_section %}
+    <section class="ls s-pt-55 s-pb-55 s-pt-lg-95 s-pb-lg-95">
+        <div class="container">
+            <div class="">
+                {% include 'parsing/include/faq/form.html' with questions=blog.faq.questions.all %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

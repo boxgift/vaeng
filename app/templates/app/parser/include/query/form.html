@@ -1,0 +1,23 @@
+<form action="" method="post" class="custom_form" style="width: 70%; margin: auto; display: block">
+    {% csrf_token %}
+    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide ckeditor_wrap">
+        <label for="content">Query content <span class="required">*</span>
+        </label>
+        <textarea id="page_content"
+                  class=""
+                  name="content" placeholder="">{% if query.content %}{{ query.content|safe }}{% endif %}</textarea>
+    </p>
+
+    <div class="tag_items">
+        {% for tag in tags %}
+            <div class="tag_item">
+                <input type="checkbox" id="tag_{{ tag.id }}" style="display: none" name="tags" value="{{ tag.id }}"
+                       {% if tag in query.tags %}checked{% endif %}>
+                <label for="tag_{{ tag.id }}" class="button is-success is-outlined"
+                       style="margin: 3px; padding: 4px 10px; cursor: pointer; border-radius: 3px">{{ tag.name }}</label>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-outline-success" style="margin: 10px auto; display: block">Edit
+    </button>
+</form>

@@ -1,0 +1,32 @@
+{% if questions.count > 0 %}
+    <section class="cd-faq js-cd-faq margin-top-lg margin-bottom-lg">
+        <ul class="cd-faq__categories" style="display:none;">
+            <li><a class="cd-faq__category cd-faq__category-selected truncate" href="#basics">Basics</a></li>
+            <li><a class="cd-faq__category truncate" href=""></a></li>
+            <li><a class="cd-faq__category truncate" href=""></a></li>
+            <li><a class="cd-faq__category truncate" href=""></a></li>
+            <li><a class="cd-faq__category truncate" href=""></a></li>
+            <li><a class="cd-faq__category truncate" href=""></a></li>
+        </ul>
+        <div class="cd-faq__items" style="padding: 0">
+            <h2 style="font-size: 19px">FAQ</h2>
+            <ul id="basics" class="cd-faq__group">
+                <li class="cd-faq__title"></li>
+                {% for question in questions.all %}
+                    <li class="cd-faq__item cd-faq__item-visible">
+{#                    <li class="cd-faq__item">#}
+                        <a class="cd-faq__trigger" href="#0"><h3 style="font-size: 20px; font-weight: 400">{{ question.question }}</h3></a>
+                        <div class="cd-faq__content cd-faq__content--visible">
+{#                        <div class="cd-faq__content">#}
+                            <div class="text-component">
+                                <p>{{ question.answer }}</p>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a href="#0" class="cd-faq__close-panel text-replace">Close</a>
+        <div class="cd-faq__overlay" aria-hidden="true"></div>
+    </section>
+{% endif %}

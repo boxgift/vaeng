@@ -1,0 +1,52 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+
+{% block content %}
+    <div class="columns is-centered">
+        <b class="column is-2 tag is-info is-light block_centered">{{ user.groups.first.name }}</b>
+    </div>
+    <form action="" class="custom_form" method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label for="" class="label">
+                Username
+            </label>
+            <div class="control">
+                <input type="text" class="input" required name="username" value="{{ user.username }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Last name
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="last_name" value="{{ user.last_name }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                First name
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="first_name" value="{{ user.first_name }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Email
+            </label>
+            <div class="control">
+                <input type="email" class="input" name="email" value="{{ user.email }}">
+            </div>
+        </div>
+
+        <div class="centered centered_flex">
+            <button type="submit" class="button is-info">Edit</button>
+            <a href="{% url 'logout' %}" class="button is-danger">Logout</a>
+        </div>
+    </form>
+{% endblock %}

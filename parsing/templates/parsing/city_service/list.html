@@ -1,0 +1,52 @@
+{% extends 'parsing/base.html' %}
+{% load static %}
+{% block title %}
+    List of all query
+{% endblock %}
+
+{% block content %}
+    {% if city_services %}
+        <h4 class="block_title">Places</h4>
+        <table class="table caption-top">
+            <thead class="table-light">
+            <tr>
+                <td>Name</td>
+                <td>Link</td>
+                <td>City</td>
+                <td>Service</td>
+                <td>Pages</td>
+                <td>Time</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for city_service in city_services %}
+                <tr>
+                    <td class="td_flex">
+                        <img src="
+                            {% if city_service.status == 'success' %}{% static 'parsing/img/success.svg' %}{% endif %}
+                            {% if city_service.status == 'warning' %}{% static 'parsing/img/warning.svg' %}{% endif %}
+                            {% if city_service.status == 'wait' %}{% static 'parsing/img/wait.svg' %}{% endif %}
+                            {% if city_service.status == 'error' %}{% static 'parsing/img/error.svg' %}{% endif %}
+                            " alt="" width="20px" height="20px">
+
+                        <a href="{{ city_service.get_absolute_url }}">{{ city_service.search_text }}</a>
+                    </td>
+                    <td>
+                        <a class="link"
+                           href='https://www.google.com/search?q={{ city_service.search_text }}&newwindow=1&tbm=lcl&sxsrf=AOaemvJF91rSXoO-Kt8Dcs2gkt9_JXLlCQ%3A1632305149583&ei=_f9KYayPI-KExc8PlcaGqA4&oq={{ city_service.search_text }}&gs_l=psy-ab.3...5515.12119.0.12483.14.14.0.0.0.0.0.0..0.0....0...1c.1.64.psy-ab..14.0.0....0.zLZdDbmH5so#rlfi=hd:;'>
+                            link
+                        </a>
+                    </td>
+                    <td>{{ city_service.city.name }}</td>
+                    <td>{{ city_service.service.name }}</td>
+                    <td>{% if city_service.page %}{{ city_service.page }}{% else %}All{% endif %} ({{ city_service.exact_count }}/{{ city_service.places_count }} places)</td>
+                    <td>{{ city_service.date_parsing|default:' - ' }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'parsing/include/pagination.html' with page=city_services %}
+    {% else %}
+        <p class="centered_link">Queries have not been created yet</p>
+    {% endif %}
+{% endblock %}

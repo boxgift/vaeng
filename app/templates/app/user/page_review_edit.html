@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Review Edit
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+{% block content_section %}
+    <section class="ls s-py-50 c-gutter-60">
+        <div class="container">
+            <div class="row">
+
+                <div class="d-none d-lg-block divider-70"></div>
+
+                <main class="offset-lg-1 col-lg-10">
+                    <a href="{{ review.page.get_absolute_url }}" style="display: block; margin: auto;width: fit-content;font-size: 30px">{{ review.page.name }}</a>
+                    <form action="" method="post" id="commentform"
+                          class="comment-form" novalidate="">
+                        {#										<div class="comment-form-author form-group has-placeholder">#}
+                        {#											<label for="author">Name</label>#}
+                        {#											<input class="form-control" id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required="true" required="required" placeholder="Name*">#}
+                        {#										</div>#}
+                        {#										<p class="comment-form-email form-group has-placeholder">#}
+                        {#											<label for="email">Email </label>#}
+                        {#											<input class="form-control" id="email" name="email" type="email" value="" size="30" maxlength="100" aria-required="true" required="required" placeholder="Email*">#}
+                        {#										</p>#}
+                        {% csrf_token %}
+                        <p class="comment-form-comment form-group has-placeholder">
+                            <label for="comment">Comment</label>
+                            <textarea class="form-control" id="comment" name="text" cols="45" rows="8"
+                                      maxlength="65525" aria-required="true" required="required"
+                                      placeholder="Message*">{{ review.text }}</textarea>
+                        </p>
+                        <p class="form-submit">
+                            <button type="submit" class="w-100 d-block btn btn-maincolor">Edit comment
+                            </button>
+                        </p>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </section>
+{% endblock %}

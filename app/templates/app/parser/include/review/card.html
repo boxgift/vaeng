@@ -1,0 +1,69 @@
+{% load static %}
+
+{% load parsing_tags static %}
+
+<div class="" style="margin-bottom: 30px">
+    <div class="box column is-12 review-card"
+         style="background-color: #FAFAFA; border-radius: 10px;{% if border_color %} border:3px solid {{ border_color }}{% endif %}">
+        <p style="border-bottom: 1px solid lightgrey; display: flex; justify-content: space-between; margin-bottom: 3px; padding-bottom: 10px">
+                    <span style="display: flex; justify-content: center; align-items: center">
+                        <img src="
+
+
+
+                                {% if review.user.profile.cloud_img %}{{ review.user.profile.cloud_img.get_min_img }}{% else %}{% static 'parsing/img/not_avatar.svg' %}{% endif %}"
+                             style="width: 30px; height: 30px; margin-right: 10px; border-radius: 100%" alt=""
+                             rel="nofollow">
+                    <span>
+                        <a class="link"
+                           href="
+                                   {% if review.user %}{% url 'app:public_cabinet' review.user.username %}{% endif %}">
+                            {{ review.get_user_name }}
+                        </a>
+                        <span style="color:grey; font-size: 11px;display: block">{{ review.date_create }}</span>
+                    </span>
+                    </span>
+            {% if review.user == request.user or request.user|hasGroup:'Redactor' %}
+                <a href="{% url 'parsing:review_edit' review.pk %}">
+                    {% if review.is_edit %}
+                        <span style="color: grey">edited:{{ review.date_update }}</span>
+                    {% endif %}
+                    <span class="icon" style="color: orange">
+                            <i class="fa fa-edit"></i>
+                        </span>
+                </a>
+            {% endif %}
+        </p>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;border-bottom: 1px solid lightgrey;padding: 0px 10px; margin-bottom: 10px">
+            <div class="wrapper_review_rating">
+                <span style="font-size: 11px !important; ">Average rating:</span>
+                <span class="rating_stars" style="margin-bottom: 24px">{{ review.get_rating|numberToStars }}</span>
+                <span class="rating_numbers" style="font-size: 20px">{{ review.get_rating }} / 5.0</span>
+            </div>
+            {% if review.parts.exists %}
+                <div class="rating_parts">
+                    {% for part in review.parts.all %}
+                        <div class="rating_part">
+                            {{ part.review_type.name }}
+                            <div>
+                                <span class="rating_stars">{{ part.rating|getRating|safe }}</span>
+                                <span class="rating_numbers">{{ part.rating }} / 5</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+        {% if review.text|length > 320 %}
+            <p>
+                {{ review.text|slice:":320" }}<span class="dots">...</span><span
+                    class="more_text">{{ review.text|slice:"320:" }}</span>
+                <span class="link" onclick="showMore(this)">More text</span>
+            </p>
+        {% else %}
+            <p>{{ review.text }}</p>
+        {% endif %}
+    </div>
+</div>

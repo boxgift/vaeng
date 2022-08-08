@@ -1,0 +1,121 @@
+{% extends 'parsing/base.html' %}
+{% load static parsing_tags %}
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block style %}
+    <style>
+        #access_status {
+            display: block;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        #access_input {
+            display: none;
+        }
+    </style>
+    {#    <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>#}
+    <script src="{% static 'parsing/ckeditor/build/ckeditor.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:city_list' %}">City</a></li>
+            <li><a href="{{ city_service.city.get_absolute_url }}">{{ city_service.city.name }}</a></li>
+            <li><a href="{{ city_service.get_absolute_url }}">{{ city_service.service.name }}</a></li>
+            <li class="is-active"><a href="">Edit</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h4 class="centered_link">{{ city_service.search_text }}</h4>
+    <form action="" method="post" class="custom_form" style="max-width: 900px">
+        {% csrf_token %}
+        <div class="field">
+            <label for="page_content" class="label">
+                Content
+            </label>
+            <div class="control">
+                <textarea type="text" class="textarea" name="content" id="page_content">
+                    {{ city_service.content|default:'' }}</textarea>
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Review types
+            </label>
+            {% for review_type in review_types %}
+                <input type="checkbox" name="review_types"
+                       {% if review_type in city_service.review_types.all %}checked{% endif %}
+                       value={{ review_type.id }} style="display: none"
+                class="review_type_tag" id="review_type_{{ review_type.id }}">
+                <label for="review_type_{{ review_type.id }}" class="tag"
+                       style="cursor: pointer">{{ review_type.name }}</label>
+            {% endfor %}
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Tags
+            </label>
+            <div class="tag_items">
+                {% for tag in tags %}
+                    <div class="tag_item">
+                        <input type="checkbox" id="tag_{{ tag.id }}" style="display: none" name="tags"
+                               value="{{ tag.id }}"
+                               {% if tag in city_service.tags.all %}checked{% endif %}>
+                        <label for="tag_{{ tag.id }}" class="button is-success is-outlined"
+                               style="margin: 3px">{{ tag.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Rating
+            </label>
+            <div class="rating-area" style="width: 215px;margin: 0px !important;">
+                {% for number in '54321'|make_list %}
+                    <input type="radio" id="rating_{{ number }}"
+                           name="rating" value="{{ number }}"
+                           {% if city_service.rating == number|add:'0' %}checked{% endif %}>
+                    <label for="rating_{{ number }}" title="Rating «{{ number }}»"></label>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="button is-info centered">Edit</button>
+    </form>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#page_content'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        let input = document.getElementById('access_input');
+        input.addEventListener('change', accessChanged)
+
+        function accessChanged() {
+            let access_status = document.getElementById('access_status')
+            if (input.checked) {
+                access_status.innerText = 'Opened access'
+                access_status.classList.add('is-success')
+            } else {
+                access_status.innerText = 'Closed access'
+                access_status.classList.remove('is-success')
+            }
+        }
+
+        accessChanged()
+    </script>
+{% endblock %}

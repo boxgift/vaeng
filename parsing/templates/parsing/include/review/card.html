@@ -1,0 +1,80 @@
+{% load parsing_tags static %}
+<div class="is-centered" style="margin-bottom: 30px">
+    <div class="card column is-12 review-card"
+         style="background-color: #FAFAFA; border-radius: 10px;{% if border_color %} border:3px solid {{ border_color }}{% endif %}">
+        <p style="border-bottom: 1px solid lightgrey; display: flex; justify-content: space-between; margin-bottom: 3px; padding-bottom: 10px">
+                    <span style="display: flex; justify-content: center; align-items: center">
+                        <img src="
+                                {% if review.user.profile.cloud_img %}{{ review.user.profile.cloud_img.get_min_img }}{% else %}{% static 'parsing/img/not_avatar.svg' %}{% endif %}"
+                             style="width: 30px; height: 30px; margin-right: 10px; border-radius: 100%" alt=""
+                             rel="nofollow">
+                    <span>
+                        <a class="link"
+                           href="
+                                   {% if review.user %}{% url 'parsing:public_cabinet' review.user.username %}{% endif %}">
+                            {{ review.get_user_name }}
+                        </a>
+                        <span style="color:grey; font-size: 11px;display: block">{{ review.date_create }}</span>
+                    </span>
+                    </span>
+            {% if review.user == request.user or request.user|hasGroup:'Redactor' %}
+                <span>
+                    {% if review.text != review.original_text %}
+                        <span class="icon" onclick="showOriginalText(this)"
+                              style="color: cornflowerblue; cursor:pointer;">
+                                <i class="fa fa-history"></i>
+                            </span>
+                    {% endif %}
+                    <a href="{% url 'parsing:review_edit' review.pk %}">
+{#                        {% if review.is_edit %}#}
+{#                            <span style="color: grey">edited:{{ review.date_update }}</span>#}
+{#                        {% endif %}#}
+                        <span class="icon" style="color: orange">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                    </a>
+                </span>
+            {% else %}
+                <p></p>
+            {% endif %}
+        </p>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;border-bottom: 1px solid lightgrey;padding: 0px 10px; margin-bottom: 10px">
+            <div style="font-size: 40px; width: 100px;margin-bottom: 12px; color: #FAA500; font-weight: 600;">
+                {{ review.get_rating }}
+                {{ review.get_rating|numberToStars }}
+            </div>
+            {% if review.parts.exists %}
+                <div class="rating_parts">
+                    {% for part in review.parts.all %}
+                        <div class="rating_part">
+                            {{ part.review_type.name }}
+                            <div>
+                                <span class="rating_stars">{{ part.rating|getRating|safe }}</span>
+                                <span class="rating_numbers">{{ part.rating }} / 5</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+        <p class="review_text" style="display: inline">
+            {% if review.text|length > 320 %}
+                {{ review.text|slice:":320" }}<span class="dots">...</span><span
+                    class="more_text">{{ review.text|slice:"320:" }}</span>
+                <span class="link" onclick="showMore(this)">More text</span>
+
+            {% else %}
+                {{ review.text }}
+            {% endif %}
+        </p>
+        {% if request.user|hasGroup:'Redactor' %}
+            {% if review.text != review.original_text %}
+                <p class="original_text" style="color: #ff8181; width: fit-content">
+                    {{ review.original_text }}
+                </p>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

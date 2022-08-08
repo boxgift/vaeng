@@ -1,0 +1,33 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Tags
+{% endblock %}
+
+{% block content %}
+    <form action="" class="custom_form" method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label for="name" class="label">
+                Name
+            </label>
+            <div class="control" style="display: flex">
+                <input type="text" required class="input" name="name" id="name">
+
+                <button type="submit" class="button is-success">Create</button>
+            </div>
+
+        </div>
+        <div class="field is-grouped is-grouped-multiline">
+            {% for tag in tags %}
+                <div class="control">
+                    <div class="tags has-addons">
+                        <a href="{% url 'parsing:tag_edit' tag.id %}" title="{{ tag.path }}" class="tag is-medium is-link">{{ tag.name }}</a>
+                        <a href="{% url 'parsing:tag_delete' tag.path %}" class="tag is-medium is-delete"></a>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </form>
+{% endblock %}

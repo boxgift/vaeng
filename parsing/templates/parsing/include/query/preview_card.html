@@ -1,0 +1,33 @@
+{% load parsing_tags %}
+<div class="column is-4" style="padding: 10px; box-sizing: border-box">
+    <div class="box" style="display: flex; min-height: 140px">
+        <a href="{% url 'parsing:places' query.slug %}"
+           style="height: 120px !important; min-width: 150px !important; width: 150px; margin-right: 10px">
+            <img src="{{ query.base_img }}"
+                 style="width: 100% !important; height: 100% !important;border-radius: 5px" alt="">
+        </a>
+        <div style="display: flex; justify-content: space-between; flex-direction: column; align-items: center">
+            <div style="display: flex; justify-content: space-between; flex-direction: column; align-self: baseline">
+                <a href="{% url 'parsing:places' query.slug %}"><span>{{ query }}</span>
+                    <p>Objects: {{ query.places_count }}</p></a>
+            </div>
+            <div style="display: flex; justify-content: center; flex-wrap: wrap">
+                {% for tag in query.tags.all %}
+                    <a href="{% url 'parsing:tag_queries' tag.pk %}" class="tag is-outlined is-info"
+                       style="margin: 3px">{{ tag.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% if request.user|hasGroup:"Redactor" %}
+            <div style="flex-grow: 1;display: flex;justify-content: end;">
+                <a href="{% url 'parsing:query_edit_access' query.slug %}">
+                    {% if query.access %}
+                        <i class="fa fa-lock-open" style="color: #00d1b2"></i>
+                    {% else %}
+                        <i class="fa fa-lock" style="color: #ff784e;"></i>
+                    {% endif %}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>

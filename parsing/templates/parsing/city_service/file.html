@@ -1,0 +1,64 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+Uploaded files
+{% endblock %}
+
+{% block breadcrumb %}
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li><a href="{% url 'parsing:index' %}">Home</a></li>
+        <li><a href="{% url 'parsing:city_list' %}">City</a></li>
+        <li><a href="{{ city_service.city.get_absolute_url }}">{{ city_service.city.name }}</a></li>
+        <li><a href="{{ city_service.get_absolute_url }}">{{ city_service.service.name }}</a></li>
+        <li class="is-active"><a href="#" aria-current="page">Files</a></li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="columns is-centered">
+    <div class="column is-6">
+        <form action="" class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label">File</label>
+                <input type="file" name="file" accept="application/json" class="input">
+            </div>
+            <button type="submit" class="button is-success is-outlined">
+                UPLOAD
+            </button>
+        </form>
+    </div>
+</div>
+<div class="columns is-centered">
+    <div class="column is-6">
+        <ol>
+            {% for file in files %}
+            <div class=""></div>
+            <li class="columns">
+                {% if file.file %}
+                <a href="{{ file.file.url }}" class="column is-3 mr-1"> {{ forloop.counter }} file</a>
+                <div class="column is-3 mr-1">
+                    <a href="{% url 'parsing:city_service_file_apply' file.pk %}"
+                       class="button is-success is-outline is-small">
+                        APPLY </a>
+                </div>
+                {% else %}
+                <a href="#" class="column is-3 mr-1">NOT FOUND</a>
+                <div class="column is-3 mr-1">
+                    <a class="button is-grey is-outline is-small"> APPLY </a>
+                </div>
+                {% endif %}
+            </li>
+
+            {% empty %}
+            <div class="columns is-centered is-multiline">
+                <span class="has-text-grey">Files not found</span>
+            </div>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+
+{% endblock %}

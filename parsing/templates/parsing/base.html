@@ -1,0 +1,849 @@
+{% load static parsing_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Home{% endblock %}</title>
+    {#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"#}
+    {#          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">#}
+    {% block style %}
+
+    {% endblock %}
+    {% block meta %}
+
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'parsing/faq/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="{% static 'parsing/css/bulma/bulma-switch.min.css' %}">
+    <link rel="stylesheet" href="{% static 'parsing/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/css/bulma-carousel.min.css">
+
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            padding: 0px;
+            margin: 0px;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff !important;
+        }
+
+        .wrapper {
+            flex: 1 0 auto;
+        }
+
+        ul, .content ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none !important;
+        }
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .header {
+            height: 60px;
+            background-color: #5588ac;
+            box-shadow: 0px 0px 5px 2px #9c9c9c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-family: "Roboto", "Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", Verdana, Arial, sans-serif;
+            font-size: 32px;
+        }
+
+        .sidebar {
+            background-color: #719fc0;
+            display: flex;
+            justify-content: center;
+            color: white;
+            align-items: center;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu li a {
+            display: flex;
+            padding: 10px;
+            height: 40px;
+            align-items: center;
+            transition: all .2s linear;
+        }
+
+        .menu > li > a {
+            margin: auto 10px;
+            color: whitesmoke;
+            justify-content: center;
+        }
+
+        .menu li a:hover, .active_link {
+            background-color: #5588ac;
+            color: white;
+        }
+
+        .content {
+            margin: 10px auto;
+            padding: 5px 15px;
+        }
+
+        .footer {
+            height: 80px;
+            background-color: #64b5f6;
+            flex-shrink: 0;
+            margin-top: 20px;
+            padding: 0px !important;
+            box-sizing: border-box;
+            border-top: 1px solid #008dfe;
+            box-shadow: 0px 0px 5px 1px #b0b0b0;
+        }
+
+        .review_type_tag:checked + label {
+            background-color: #48c78e;
+            color: white;
+        }
+
+        .button_add {
+            position: absolute;
+            right: 20px;
+            background-color: #70bff7;
+            border-color: #99b7e4;
+        }
+
+        .statistic_text {
+            text-align: center;
+            color: grey;
+            margin: 20px auto;
+        }
+
+        .custom_form {
+            max-width: 400px;
+            margin: 10px auto;
+            width: 90%;
+        }
+
+        .pagination ul {
+            margin: 0px !important;
+            padding: 0px !important;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0px auto;
+        }
+
+        .centered {
+            margin: 1px auto;
+            display: block;
+        }
+
+        .welcome_text {
+            margin: 20px auto;
+            text-align: center;
+            color: #5a5a5a;
+            font-size: 19px;
+        }
+
+        .welcome_text a {
+            color: #6f9fcc;
+        }
+
+        .centered_link {
+            text-align: center;
+            margin: 10px auto;
+            display: block;
+            width: fit-content;
+        }
+
+        .centered_flex {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .between_flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .td_flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .td_flex img {
+            margin-right: 10px;
+        }
+
+        .msg {
+            z-index: 10;
+            opacity: 0.9;
+            margin: 5px auto;
+            padding: 10px;
+            width: 230px;
+            display: block;
+            color: white;
+            background-color: #9c9c9c;
+            border-radius: 2px;
+            box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+        }
+
+        .messages {
+            display: flex;
+            position: fixed;
+            z-index: 10;
+            right: 20px;
+            flex-direction: column;
+        }
+
+        .msg-error {
+            background-color: orangered;
+        }
+
+        .msg-success {
+            background-color: lightgreen;
+        }
+
+        .msg-warning {
+            background-color: orange;
+        }
+
+        .form_title {
+            border-bottom: 1px solid #719fc0;
+            display: block;
+            padding: 6px;
+            text-align: right;
+            color: grey;
+            margin: 10px auto;
+        }
+
+        .empty {
+            color: grey;
+        }
+
+        .reviews {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .review {
+            margin: 10px;
+            border-radius: 3px;
+            box-shadow: 0px 0px 3px 1px #bfbfbf;
+            padding: 5px 10px;
+            background-color: white;
+            transition: background-color .4s linear;
+        }
+
+        .box .author {
+            display: block;
+            width: fit-content;
+        }
+
+        .box .text {
+            transition: color .4s linear;
+            color: grey;
+        }
+
+
+        .review:hover .text {
+            color: #000;
+        }
+
+        .accordion_flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 95%;
+        }
+
+        .weekday_text {
+            padding: 0px 20px;
+            color: #9c9c9c;
+        }
+
+        .group_item {
+            display: block;
+        }
+
+        .rating-area {
+            overflow: hidden;
+            width: 265px;
+            margin: 0 auto;
+        }
+
+        .rating-area:not(:checked) > input {
+            display: none;
+        }
+
+        .rating-area:not(:checked) > label {
+            float: right;
+            width: 42px;
+            padding: 0;
+            cursor: pointer;
+            font-size: 32px;
+            line-height: 32px;
+            color: lightgrey;
+            text-shadow: 1px 1px #bbb;
+        }
+
+        .rating-area:not(:checked) > label:before {
+            content: '★';
+        }
+
+        .rating-area > input:checked ~ label {
+            color: gold;
+            text-shadow: 1px 1px #c60;
+        }
+
+        .rating-area:not(:checked) > label:hover,
+        .rating-area:not(:checked) > label:hover ~ label {
+            color: #fff1a8;
+        }
+
+        .rating-area > input:checked + label:hover,
+        .rating-area > input:checked + label:hover ~ label,
+        .rating-area > input:checked ~ label:hover,
+        .rating-area > input:checked ~ label:hover ~ label,
+        .rating-area > label:hover ~ input:checked ~ label {
+            color: gold;
+            text-shadow: 1px 1px goldenrod;
+        }
+
+        .rate-area > label:active {
+            position: relative;
+        }
+
+
+        .link {
+            color: #6f9fcc;
+        }
+
+        .block_title {
+            text-align: center;
+        }
+
+        .block_centered {
+            display: block;
+            margin: 10px auto;
+        }
+
+        .text_centered {
+            text-align: center;
+        }
+
+        .menu_nav {
+            box-shadow: 0px 0px 5px 1px lightgrey;
+        }
+
+        .block_data {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .hover_link:hover {
+            color: dodgerblue;
+            border-bottom: 1px solid dodgerblue;
+        }
+
+        .place_preview_card_copy {
+            width: 100%;
+            display: flex !important;
+            margin-top: -25px;
+            padding-bottom: 5px;
+            justify-content: end;
+        }
+
+        .place_preview_card_copy i {
+            color: #9a9a9a;
+        }
+
+        .place_preview_card_copy i:hover {
+            color: #00d1b2;
+            cursor: pointer;
+        }
+
+        .message_block {
+            top: 10px;
+            position: fixed;
+            color: white;
+            display: flex;
+            opacity: 0;
+            transition: all .5s;
+            right: 10px;
+            width: 150px;
+            padding: 10px;
+            border-radius: 3px;
+            background: #8c5bbf;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .message_block.show {
+            opacity: 1;
+            z-index: 111;
+        }
+
+        .message_block span {
+            z-index: 10;
+        }
+
+        .message_block_textarea {
+            opacity: 0;
+            width: 0px;
+            height: 0px;
+        }
+
+        #place_iframe {
+            max-width: 640px;
+            width: 100%;
+            height: 540px;
+            margin: auto;
+            display: block;
+        }
+
+        .more_text {
+            display: none;
+        }
+
+        .query_clone_icon {
+            cursor: pointer;
+        }
+
+        .maps iframe {
+            width: 100%;
+            height: 250px;
+        }
+
+        .question_field {
+            border: 1px solid #00d1b2;
+        }
+
+        .place_card {
+            display: flex;
+        }
+
+        .place_base_img {
+            max-height: 360px !important;
+            width: 100%;
+            margin-right: 30px;
+            border-radius: 3px;
+        }
+
+        .slider__wrapper {
+            background-color: rgb(248, 248, 248);
+            border-radius: 10px;
+        }
+
+        .slider__item {
+            box-shadow: 0 0 0 1px rgb(10 10 10 / 2%);
+        }
+
+        .queries_admin_button {
+            display: flex;
+            position: absolute;
+            left: 15px;
+        }
+
+        .queries_copy_button {
+
+            right: 15px;
+            position: absolute;
+            color: #878787;
+            margin-top: -20px;
+        }
+
+        .place_admin_buttons {
+            display: flex;
+            justify-content: end;
+            flex-direction: row;
+            position: absolute;
+            right: 0px
+        }
+
+        .place_img_name {
+            position: absolute;
+            color: #4a4a4a;
+            word-break: break-word;
+            width: inherit;
+            font-size: 20px !important;
+            background: #fff;
+            padding: 5px 0px;
+            opacity: .8;
+            margin-top: -1px !important;
+            text-align: center;
+        }
+
+        .place_timetable p {
+            display: inline;
+        }
+
+        .place_timetable {
+            margin-left: 7px;
+        }
+
+        .place_timetable button {
+            display: none;
+        }
+
+        .place_timetable tr > td:last-child {
+            display: none;
+        }
+
+        .place_timetable td {
+            border: 0px solid #fff !important;
+            padding: 0px !important;
+        }
+
+        .place_timetable tr {
+        }
+
+        .rating_stars {
+            display: flex;
+            height: 21px;
+            font-size: 40px
+        }
+
+        .rating_numbers {
+            display: none;
+            color: #faa500;
+        }
+
+        @media screen and (max-width: 630px) {
+            .rating_part {
+                padding: 5px !important;
+                font-size: 11px;
+                color: grey;
+            }
+
+            .rating_numbers {
+                display: inline !important;
+            }
+
+            .rating_stars {
+                display: none !important;
+            }
+
+            .review_text {
+                font-size: 14px;
+            }
+
+            .place_preview_card_info {
+                font-size: 14px;
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+            .place_card {
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+
+            .place_admin_buttons {
+                flex-direction: column;
+                width: 45px;
+                right: 2px;
+            }
+
+            .place_admin_buttons a {
+                width: 100% !important;
+            }
+
+            .place_img_name {
+                font-size: 17px !important;
+                margin: auto 10%;
+                width: -webkit-fill-available;
+                position: relative;
+                margin-bottom: -29px !important;
+            }
+
+            .place_card_info {
+                width: 100% !important;
+            }
+
+            .place_card_description {
+                width: 100% !important;
+            }
+
+            .place_base_img {
+                height: auto !important;
+                width: 80% !important;
+                margin: auto;
+                display: block;
+            }
+
+            .slider__item {
+                flex: none !important;
+                max-width: 250px;
+                width: 250px;
+            }
+
+            .queries_admin_button {
+                margin-top: -40px;
+            }
+
+            .queries_copy_button {
+                margin-top: -60px;
+            }
+        }
+
+        .original_text {
+            display: none;
+        }
+
+        .review_text {
+            display: block;
+        }
+
+        .place_img {
+            width: 300px !important;
+            min-width: 300px !important;
+            height: 200px !important;
+            max-height: 100%;
+            margin-right: 20px;
+            border-radius: 5px
+        }
+
+        .admin_button_label {
+            display: none;
+            position: absolute;
+            font-weight: 400;
+            font-size: 12px;
+            border: 1px solid #48c78e;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+
+        .admin_button:hover + .admin_button_label {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+{# PRELOADER #}
+<style type="text/css">#hellopreloader > p {
+    display: none;
+}
+
+#hellopreloader_preload {
+    display: block;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /*min-width: 1000px*/;
+    background: #52B3D9 url({% static 'parsing/img/bars.svg' %}) center center no-repeat;
+    background-size: 78px;
+}</style>
+<div id="hellopreloader">
+    <div id="hellopreloader_preload"></div>
+    <p></p></div>
+<script type="text/javascript">var hellopreloader = document.getElementById("hellopreloader_preload");
+
+function fadeOutnojquery(el) {
+    el.style.opacity = 1;
+    var interhellopreloader = setInterval(function () {
+        el.style.opacity = el.style.opacity - 0.05;
+        if (el.style.opacity <= 0.05) {
+            clearInterval(interhellopreloader);
+            hellopreloader.style.display = "none";
+        }
+    }, 16);
+}
+
+window.onload = function () {
+    setTimeout(function () {
+        fadeOutnojquery(hellopreloader);
+    }, 50);
+};</script>
+
+
+<nav class="navbar nav menu_nav" role="navigation" aria-label="main navigation">
+    <div class="container">
+
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{% url 'parsing:index' %}">
+                <img src="{% static 'parsing/img/GoogleParser.png' %}" width="120px">
+            </a>
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" id="burger-menu"
+               data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                {% if request.user.is_authenticated %}
+                    <a class="navbar-item" href="/">Home</a>
+                    <a class="navbar-item" href="{% url 'parsing:city_list' %}">City</a>
+                    <a class="navbar-item" href="{% url 'parsing:service_list' %}">Service</a>
+
+                    {#                    <a class="navbar-item" href="{% url 'parsing:queries' %}">Places</a>#}
+                    {% if request.user|hasGroup:'SuperAdmin' %}
+                        <a class="navbar-item" href="{% url 'parsing:city_service_list' %}">All queries</a>
+                    {% endif %}
+                    <a class="navbar-item" href="{% url 'parsing:my_reviews' %}">My reviews</a>
+                    {% if request.user|hasGroup:'Redactor' %}
+                        <a class="navbar-item" href="{% url 'parsing:all_reviews' %}">All reviews</a>
+                    {% endif %}
+                {% else %}
+                    <a class="navbar-item" href="{% url 'parsing:index' %}">Home</a>
+                    {#                    <a class="navbar-item" href="{% url 'parsing:queries' %}">Places</a>#}
+                {% endif %}
+                {% if request.user and request.user|hasGroup:'Admin' %}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            More
+                        </a>
+                        <div class="navbar-dropdown">
+                            {#                        <a class="navbar-item" href="{% url 'parsing:admin_dashboard' %}">Панель управления</a>#}
+                            <a class="navbar-item" href="{% url 'parsing:unique_reviews_list' %}">Uniqueize review</a>
+                            <a class="navbar-item" href="{% url 'parsing:group_list' %}">Roles</a>
+                            <a class="navbar-item" href="{% url 'parsing:user_list' %}">Users</a>
+                            <a class="navbar-item" href="{% url 'parsing:tags' %}">Tags</a>
+                            <a class="navbar-item" href="{% url 'parsing:review_types' %}">Review types</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="#">Settings</a>
+                        </div>
+                    </div>
+                {% endif %}
+                <a class="navbar-item" href="{% url 'parsing:states_list' %}">MAP</a>
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        {% if request.user.is_authenticated %}
+                            <a class="button is-primary" href="{% url 'parsing:profile' %}">
+                                <strong>{{ request.user.last_name|slice:":1" }}. {{ request.user.first_name }} </strong>
+                            </a>
+                            <a class="button is-light" href="{% url 'logout' %}">
+                                Logout
+                            </a>
+                        {% else %}
+                            <a class="button is-primary" href="{% url 'parsing:registration' %}">
+                                <strong>Registration</strong>
+                            </a>
+                            <a class="button is-light" href="{% url 'login' %}">
+                                Login
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+<div class="container" style="width:100%; padding:13px; flex-grow: 0">
+    {% block breadcrumb %}
+
+    {% endblock %}
+</div>
+
+<div class="wrapper">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <span class="msg msg-{{ message.tags }}">{{ message|safe }}</span>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="message_block button" id="message_block">
+        <span>
+
+        </span>
+        <textarea class="message_block_textarea" id="message_block_textarea" cols="0" rows="0"></textarea>
+    </div>
+    <div class="content container">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</div>
+<div class="footer">
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
+<script>
+    bulmaCarousel.attach('#slider', {
+        slidesToScroll: 1,
+        slidesToShow: 3,
+        infinite: true,
+    });
+</script>
+
+<script>
+    function showOriginalText(elem) {
+        let review_block = elem.parentNode.parentNode.parentNode;
+        console.log(review_block);
+        let review_text = review_block.querySelector('p.review_text');
+        console.log(review_text.style.display === 'none' || review_text.style.display === '')
+        console.log(review_text.style.display)
+        review_text.style.display = review_text.style.display === 'none' || review_text.style.display === '' ? 'inline' : 'none';
+        let original_text = review_block.querySelector('p.original_text')
+        original_text.style.display = original_text.style.display === 'none' || original_text.style.display === '' ? 'inline' : 'none';
+        console.log(original_text)
+    }
+
+    function showMore(elem) {
+        let text_block = elem.parentNode;
+        console.log(elem)
+        let dots = text_block.querySelector('span.dots')
+        let more_text = text_block.querySelector('span.more_text')
+        if (more_text.style.display === 'inline') {
+            elem.innerHTML = 'More text'
+            dots.innerHTML = '...';
+            more_text.style.display = 'none';
+        } else {
+            elem.innerHTML = 'Less text'
+            dots.innerHTML = ''
+            more_text.style.display = 'inline'
+        }
+    }
+
+    let burger_menu = document.getElementById('burger-menu');
+    burger_menu.addEventListener('click', () => {
+        let navbar = document.getElementById('navbarBasicExample');
+        navbar.classList.toggle('show');
+    })
+</script>
+
+{% block script %}
+
+{% endblock %}
+{#<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"#}
+{#        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"#}
+{#        crossorigin="anonymous"></script>#}
+
+
+</body>
+</html>

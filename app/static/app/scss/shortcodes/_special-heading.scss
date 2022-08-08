@@ -1,0 +1,72 @@
+/*
+** Special Heading
+*/
+.special-heading {
+  word-wrap: break-word;
+  font-weight: 900;
+  line-height: 1;
+  &.text-lowercase {
+    font-size: 62px;
+    font-weight: 300;
+    margin-bottom: 0;
+    line-height: 1.1;
+  }
+  &.big,
+  &.text-uppercase {
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 0.8;
+  }
+  &.big {
+    margin-top: 0.65em;
+    margin-bottom: 0.65em;
+  }
+  @media (max-width: 1600px) {
+    &.big,
+    &.text-lowercase,
+    &.text-uppercase {
+      font-size: 42px;
+      line-height: 1.1;
+    }
+  }
+
+  & + h3 {
+    margin-top: -1em;
+  }
+
+  & + p {
+    @include small-text();
+    @media(min-width: 1200px) {
+      &.extra-letter-spacing {
+        letter-spacing: 2em;
+      }
+    }
+  }
+  &.text-center + p {
+    text-align: center;
+  }
+
+  h3.small & {
+    line-height: 1;
+    font-size: 38px;
+  }
+
+}
+
+h6.special-heading + h2 {
+  margin-top: 18px;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+  @media (max-width: 767px) {
+    margin-top: 5px;
+  }
+} 
+
+h3.small {
+  font-size: 20px;
+  margin-bottom: 36px;
+}
+
+h6.special-heading {
+  margin-bottom: 0;
+}

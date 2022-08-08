@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Review edit
+{% endblock %}
+
+{% block head %}
+
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block content_section %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h6><a href="" class="link"></a></h6>
+                {% include 'app/parser/include/review/form.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'app/js/rating_check.js' %}"></script>
+{% endblock %}

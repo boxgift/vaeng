@@ -1,0 +1,71 @@
+{% extends 'parsing/base.html' %}
+{% load static parsing_tags %}
+
+{% block title %}
+    {{ service.name }}
+{% endblock %}
+
+{% block head %}
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <link rel="stylesheet" href="{% static 'parsing/faq/css/style.css' %}">
+    <style>
+        .cd-faq__trigger {
+            color: inherit;
+        }
+    </style>
+    {% if service.faq and service.faq.questions %}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+          {% for question in service.faq.questions.all|slice:"3" %}
+              {
+                "@type": "Question",
+                "name": "{{ question.question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ question.answer }}"
+                }
+              }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          ]
+        }
+        </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block content %}
+    {% if request.user|hasGroup:'Admin' %}
+        <div class="place_admin_buttons">
+            <a href="{% url 'parsing:service_edit' service.slug %}"
+               title="Edit"
+               class="button is-warning is-light is-outlined centered mr-1"
+               style="width: fit-content"><i class="fa fa-edit"></i></a>
+
+            <a href="{% url 'parsing:service_edit_faq' service.slug %}"
+               title="FAQ"
+               class="button is-warning is-light is-outlined centered mr-1"
+               style="width: fit-content"><i class="fa fa-question"></i></a>
+        </div>
+    {% endif %}
+    <h1 style="font-size: 21px; margin-top: 11px;"><span
+            style="font-style: normal !important; font-weight: 400;">Cities with this service: </span>{{ service.name }}
+    </h1>
+    <p>{{ service.description|default:'' }}</p>
+    <hr>
+    <div class="columns is-multiline">
+        {% for city in cities %}
+            {% include 'parsing/include/city/preview_card.html' with city=city %}
+        {% endfor %}
+    </div>
+    {% if service.faq %}
+        {% include 'parsing/include/faq/block.html' with questions=service.faq.questions.all %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'parsing/faq/js/util.js' %}"></script>
+    <script src="{% static 'parsing/faq/js/main.js' %}"></script>
+{% endblock %}

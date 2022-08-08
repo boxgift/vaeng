@@ -1,0 +1,26 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    {{ tag.name }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:queries' %}">Places</a></li>
+            <li class="is-active"><a href="">Tags</a></li>
+            <li class="is-active"><a href="">{{ tag.name }}</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="columns is-multiline">
+        {% for query in queries %}
+            {% include 'parsing/include/query/preview_card.html' with query=query %}
+        {% endfor %}
+    </div>
+
+    {% include 'parsing/include/pagination.html' with page=queries %}
+{% endblock %}

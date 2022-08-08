@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Добавить парсер
+{% endblock %}
+
+
+{% block head %}
+    <style>
+        .hidden_block {
+            display: none !important;
+            transition: .8s all;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute !important;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc !important;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+{% endblock %}
+
+{% block content_section %}
+    <form action="" method="post" class="custom_form" style="width: 70%; margin: auto; display: block">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Название запроса</label>
+            <input type="text" class="form-control" name="query_name">
+        </div>
+
+        <label class="switch" style="margin: auto; display: block">
+            <input type="checkbox" id="page_checkbox" name="not_all">
+            <span class="slider"></span>
+        </label>
+        <div style="color: grey; text-align: center; margin-bottom: 10px;" id="all_pages_text">Все страницы</div>
+
+
+        <div class="mb-3" >
+            <label for="exampleInputPassword1" class="form-label"></label>
+            <input type="number" id="page" class="form-control hidden_block" placeholder="Количество страниц">
+        </div>
+        <button type="submit" class="btn btn-outline-success" style="margin: 10px auto; display: block">Добавить</button>
+    </form>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        let page_checkbox = document.getElementById('page_checkbox');
+        page_checkbox.addEventListener("change",
+            function () {
+                let page = document.getElementById('page');
+                page.classList.toggle('hidden_block');
+                let all_pages_text = document.getElementById('all_pages_text');
+                all_pages_text.classList.toggle('hidden_block');
+                if (page_checkbox) {
+                    if (page_checkbox.checked) {
+                        page.setAttribute('name', 'query_page');
+                    } else {
+                        page.removeAttribute('name');
+                    }
+                }
+            }
+        )
+    </script>
+{% endblock %}

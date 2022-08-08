@@ -1,0 +1,51 @@
+a/*
+** 404
+*/
+
+.error-404 {
+  .page-header {
+    h3 {
+      font-size: 100px;
+      font-family: 'Poppins', sans-serif;
+      line-height: 1;
+      margin: 0;
+      @media (min-width: 992px) {
+        font-size: 238px;
+      }
+    }
+    p {
+      font-size: 24px;
+      @media (min-width: 768px) {
+        letter-spacing: 0.1em;
+        font-size: 54px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .widget_search {
+    margin: 58px 0;
+  }
+  
+}
+
+#search-404 {
+  .form-group {
+    max-width: 640px;
+    margin: auto;
+    i {
+      opacity: 1 !important; 
+    }
+  }
+  input[type="search"] {
+    max-width: 459px;
+    display: inline-block;
+    margin-right: 5px;
+    border: 2px solid #fff;
+    background-color: transparent;
+  }
+}
+
+ h2.not-found {
+  margin-top: 44px;
+}

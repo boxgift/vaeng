@@ -1,0 +1,114 @@
+{% load static %}
+<div id="comments" class="comments-area rounded">
+    <h5 id="reply-title" class="comment-reply-title">Leave a comment</h5>
+    {% if commented %}
+        <p>You have already left a review</p>
+    {% else %}
+        <div id="respond" class="comment-respond ls d-flex">
+            {% if not request.user.is_authenticated %}
+                <p><a href="">Register to leave comments</a></p>
+            {% else %}
+
+                <div class="form-avatar w-38 h-100">
+                    <img src="{% if request.user.profile.img %}
+                                                        {{ request.user.profile.img.url }}
+                                                  {% else %}
+                                                        {% static 'app/images/empty-avatar.png' %}
+                                                  {% endif %}" alt="">
+                </div>
+                <form action="" method="post" id="commentform"
+                      class="comment-form" novalidate="">
+                    {#										<div class="comment-form-author form-group has-placeholder">#}
+                    {#											<label for="author">Name</label>#}
+                    {#											<input class="form-control" id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required="true" required="required" placeholder="Name*">#}
+                    {#										</div>#}
+                    {#										<p class="comment-form-email form-group has-placeholder">#}
+                    {#											<label for="email">Email </label>#}
+                    {#											<input class="form-control" id="email" name="email" type="email" value="" size="30" maxlength="100" aria-required="true" required="required" placeholder="Email*">#}
+                    {#										</p>#}
+                    {% csrf_token %}
+                    <p class="comment-form-comment form-group has-placeholder">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-control" id="comment" name="text" cols="45" rows="8"
+                                  maxlength="65525" aria-required="true" required="required"
+                                  placeholder="Message*"></textarea>
+                    </p>
+                    <p class="form-submit">
+                        <button type="submit" class="w-100 d-block btn btn-maincolor">Send comment
+                        </button>
+                    </p>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+    <!-- #respond -->
+    <!-- #comment-## -->
+    <ol class="comment-list">
+        {% for review in reviews %}
+            <li class="comment">
+                <article class="comment-body">
+                    <footer class="comment-meta">
+                        <div class="comment-author vcard">
+                            <img alt="" src="
+                                                  {% if review.user.profile.img %}
+                                                        {{ review.user.profile.img.url }}
+                                                  {% else %}
+                                                        {% static 'app/images/empty-avatar.png' %}
+                                                  {% endif %}">
+                        </div>
+                        <!-- .comment-author -->
+                        <div class="comment-name">
+                            <span class="says">By:</span>
+                            <b class="fn">
+                                <a href="#" rel="nofollow"
+                                   class="url fw-500">{{ review.user.first_name }} {{ review.user.last_name }}</a>
+                            </b>
+                            <span class="comment-metadata d-block">
+														<a href="#">
+															<time datetime="">
+																{{ review.date_create }}{% if review.is_edit %}
+                                                                    (edited){% endif %}
+															</time>
+
+														</a>
+													</span>
+                            <!-- .comment-metadata -->
+                        </div>
+                    </footer>
+                    <!-- .comment-meta -->
+                    <div class="comment-content">
+                        <p>
+                            {{ review.text }}
+                        </p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div>
+													<span class="like">
+														<a class="like-link fw-500" href="#"
+                                                           aria-label="Reply to John Doe">Like</a>
+													</span>
+                            <span class="reply">
+														<a rel="nofollow" class="comment-reply-link fw-500"
+                                                           href="#comments" aria-label="Reply to John Doe">Reply</a>
+													</span>
+                        </div>
+                        <div>
+													<span class="like-count color-dark">
+														<i class="fw-600 color-dark fa fa-heart-o"></i>
+														0
+													</span>
+                            <span class="comment-count color-dark">
+														<i class="color-dark icon-m-comment-alt"></i>
+														0 Comment
+													</span>
+                        </div>
+                    </div>
+                </article>
+                <!-- .comment-body -->
+            </li>
+        {% endfor %}
+        <!-- #comment-## -->
+    </ol>
+    <!-- .comment-list -->
+
+</div>

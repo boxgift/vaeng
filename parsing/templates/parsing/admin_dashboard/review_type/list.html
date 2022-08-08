@@ -1,0 +1,42 @@
+{% extends 'parsing/base.html' %}
+{% load static %}
+{% block title %}
+    Review types
+{% endblock %}
+
+
+{% block content %}
+    <form action="" method="post" style="display: flex; justify-content: center">
+        {% csrf_token %}
+        <div class="field">
+            <div class="control">
+                <input type="text" required class="input" name="name" placeholder="" style="width: 230px">
+            </div>
+        </div>
+        <button type="submit" class="button is-success">Create</button>
+    </form>
+    <p></p>
+    <table class="table is-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for review_type in review_types %}
+            <tr>
+                <td>{{ review_type.name }}</td>
+                <td>
+                    <a href="{% url 'parsing:review_type_edit' review_type.pk %}">
+                    <span class="icon block_centered" style="color: orange">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ category.title|default:category.name }}
+{% endblock %}
+
+
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h1>{{ category.name }}</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">{{ category.name.capitalize }}</a>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content_section %}
+    <section class="ls s-py-60 s-py-lg-100">
+        <div class="container" style="padding-top: 10px">
+            {% if request.user.is_superuser %}
+                <div style="margin: 10px auto; display: flex; justify-content: end; align-items: center">
+                    <a href="{% url 'app:category_change_urls' category.slug %}" class="btn btn-outline-warning mr-2">Edit urls</a>
+                    <a href="{% url 'app:category_edit' category.slug %}" class="btn btn-outline-warning mr-2">Edit</a>
+                    <a href="{% url 'app:page_create' %}" class="btn btn-outline-maincolor2">Create</a>
+                </div>
+            {% endif %}
+            <div class="row c-gutter-40">
+
+                {#                <main class="col-lg-7 col-xl-8">#}
+                <main class="col-lg-7 col-xl-8 order-lg-2">
+                    {% for page in pages %}
+                        <article
+                                class="post side-item text-center text-md-left event-post content-padding rounded bordered event-post">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-md-5">
+                                    <div class="item-media cover-image rounded-left"
+                                         {% if not page.img %}style="background-color: #222a35"{% endif %}>
+                                        {% if page.img %}
+                                            <img src="{{ page.img.url }}" alt="">
+                                        {% else %}
+                                            <span class="text-center vaeng-text">
+                                                VAeng
+                                            </span>
+                                        {% endif %}
+                                        <div class="media-links">
+                                            <a class="abs-link" title="" href="{{ page.get_absolute_url }}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-8 col-lg-7 col-md-6">
+                                    <div class="item-content">
+
+                                        <h6 class="lh-30">
+                                            <a href="{{ page.get_absolute_url }}">{{ page.name }}</a>
+                                        </h6>
+
+{#                                        <p class="item-meta color-darkgrey">#}
+{#                                            <i class="fa fa-calendar color-main"></i>#}
+{#                                            <span>{{ page.date_create }}</span>#}
+                                            {#												<i class="fa fa-clock-o color-main"></i> <span>01:15 pm - 04:30 pm</span>#}
+{#                                        </p>#}
+                                        <p>
+                                            {% if page.content %}
+                                                {{ page.content|striptags|truncatechars:150 }}{% endif %}
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                    {% include 'app/include/pagination.html' with pages=pages %}
+                </main>
+
+                {% include 'app/include/sidebar.html' with items=popular_pages tags=tags path=path %}
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

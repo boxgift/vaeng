@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Cabinet
+{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'app/css/shop.css' %}" class="color-switcher-link">
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+
+{% block content_section %}
+    {#    <a href="{% url 'app:create_pages' %}">Спарсить категории</a>#}
+    <section class="ls s-pt-55 s-pb-60 s-pt-lg-95 s-pb-lg-100 shop-details">
+        <div class="container">
+            <div class="row">
+                <main class="col-lg-12">
+                    <article>
+                        <header class="entry-header">
+                            <h4>Account details
+                            </h4>
+                        </header>
+                        <!-- .entry-header -->
+                        <div class="entry-content">
+                            <div class="woocommerce">
+                                <nav class="woocommerce-MyAccount-navigation ls ms">
+                                    <ul>
+                                        <li>
+                                            <a href="{% url 'app:my_blogs' %}">
+                                                <p>Blogs</p>
+                                            </a>
+                                        </li>
+                                        {#                                        <li>#}
+                                        {#                                            <a href="">#}
+                                        {#                                                <p>News</p>#}
+                                        {#                                            </a>#}
+                                        {#                                        </li>#}
+                                        <li class="is-active">
+                                            <a href="{% url 'app:profile' %}">
+                                                <p>Account details</p>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'logout' %}">
+                                                <p>Logout</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
+
+                                <div class="woocommerce-MyAccount-content">
+
+                                    <form class="woocommerce-EditAccountForm edit-account" action="" method="post">
+                                        {% csrf_token %}
+                                        <p><img src="
+                                                    {% if user.profile.img %}
+                                                        {{ user.profile.img.url }}
+                                                    {% else %}
+                                                        {% static 'app/images/empty-avatar.png' %}
+                                                    {% endif %}" alt="">
+                                        </p>
+                                        <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+                                            <label for="account_first_name">First name <span class="required">*</span>
+                                            </label>
+                                            <input type="text"
+                                                   class="woocommerce-Input woocommerce-Input--text input-text"
+                                                   name="first_name" id="account_first_name"
+                                                   value="{{ user.first_name }}"
+                                                   placeholder="First name">
+                                        </p>
+                                        <p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+                                            <label for="account_last_name">Last name <span class="required">*</span>
+                                            </label>
+                                            <input type="text"
+                                                   class="woocommerce-Input woocommerce-Input--text input-text"
+                                                   name="last_name" id="account_last_name" value="{{ user.last_name }}"
+                                                   placeholder="Last name">
+                                        </p>
+                                        <div class="clear">
+
+                                        </div>
+
+                                        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                            <label for="account_email">Username <span class="required">*</span>
+                                            </label>
+                                            <input type="text"
+                                                   class="woocommerce-Input woocommerce-Input--email input-text"
+                                                   name="username" id="account_email" value="{{ user.username }}"
+                                                   placeholder="Email address">
+                                        </p>
+
+                                        {#                                        <fieldset>#}
+                                        {#                                            <h4 class="mb-20">Account details</h4>#}
+                                        {##}
+                                        {#                                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">#}
+                                        {#                                                <label for="password_current">Current password (leave blank to leave#}
+                                        {#                                                    unchanged)</label>#}
+                                        {#                                                <input type="password"#}
+                                        {#                                                       class="woocommerce-Input woocommerce-Input--password input-text"#}
+                                        {#                                                       name="password_current" id="password_current"#}
+                                        {#                                                       placeholder="Current password (leave blank to leave unchanged)">#}
+                                        {#                                            </p>#}
+                                        {#                                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">#}
+                                        {#                                                <label for="password_1">New password (leave blank to leave#}
+                                        {#                                                    unchanged)</label>#}
+                                        {#                                                <input type="password"#}
+                                        {#                                                       class="woocommerce-Input woocommerce-Input--password input-text"#}
+                                        {#                                                       name="password_1" id="password_1"#}
+                                        {#                                                       placeholder="New password (leave blank to leave unchanged)">#}
+                                        {#                                            </p>#}
+                                        {#                                            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">#}
+                                        {#                                                <label for="password_2">Confirm new password</label>#}
+                                        {#                                                <input type="password"#}
+                                        {#                                                       class="woocommerce-Input woocommerce-Input--password input-text"#}
+                                        {#                                                       name="password_2" id="password_2"#}
+                                        {#                                                       placeholder="Confirm new password">#}
+                                        {#                                            </p>#}
+                                        {#                                        </fieldset>#}
+                                        <div class="clear"></div>
+                                        <p>
+                                            <input type="submit" class="woocommerce-Button button"
+                                                   name="save_account_details" value="Save changes">
+                                        </p>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .entry-content -->
+                    </article>
+
+                </main>
+            </div>
+            <div class="divider-3"></div>
+        </div>
+    </section>
+
+{% endblock %}

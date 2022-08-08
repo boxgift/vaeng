@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load app_tags parsing_tags static %}
+{% block title %}
+    Объекты
+{% endblock %}
+
+{% block head %}
+    <style>
+        .rating_block {
+            background-color: gold;
+            padding: 10px 20px;
+            position: absolute;
+            margin-left: 10px;
+            color: whitesmoke;
+            box-sizing: border-box;
+            margin-top: 10px;
+            border-top-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .custom_cards {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 992px) {
+            .place_card_img_info {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: column;
+            }
+            .place_card_img_info a:first-child{
+                align-self: center;
+            }
+            .top_place_number{
+                display: none;
+            }
+            .place_img{
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+    {% if query.faq and query.faq.questions %}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+          {% for question in query.faq.questions.all|slice:"3" %}
+              {
+                "@type": "Question",
+                "name": "{{ question.question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ question.answer }}"
+                }
+              }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          ]
+        }
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h1>{{ query.name }}</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app:query' %}">Places</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span>{{ query.name }}</span>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content_section %}
+    <div class="container mt-3">
+        <div class="query_description">
+            {{ query.content|default:'<span style="color: grey; text-align:center; width: 100%; display: block;">Description not found</span>'|safe }}
+        </div>
+        <div style="padding: 30px">
+            <div style="display: flex; justify-content: center; flex-wrap: wrap">
+                {% for tag in query.tags.all %}
+                    <span class="btn btn-outline-info" style="margin: 3px">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="custom_cards" style="flex-direction: column">
+            {% for place in places|slice:":20" %}
+                {% include 'app/parser/include/place/preview_card.html' with place=place %}
+            {% endfor %}
+        </div>
+
+        <div class="letters" style="display: flex; flex-wrap: wrap;padding: 20px;justify-content: center">
+            {% for letter in letters %}
+                <div class="letter" style="width: 30%; min-width: 300px">
+                    <hr>
+                    <span style="color: cornflowerblue">{{ letter }}</span>
+                    {% for place in places_letter|getValue:letter|getValue:'places' %}
+                        <p><a href="{% url 'app:place_detail' place.slug %}"
+                              class="hover_link">{{ place.name }}</a></p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        {% include 'app/include/faq/block.html' with questions=query.faq.questions %}
+    </div>
+{% endblock %}

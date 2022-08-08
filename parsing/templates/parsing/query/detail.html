@@ -1,0 +1,51 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags %}
+{% block title %}
+    {{ query.name }}
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'parsing:query_file' query.pk %}" class="button is-info button_add">
+        <span class="icon is-small">
+            <i class="fas fa-file-excel"></i>
+        </span>
+        <span>Generate file</span>
+    </a>
+    <div class="select">
+        <select class=""
+                onchange="window.location.href = '{{ request.get_path }}?sorted='+this.value">
+            <option value="">Default</option>
+            <option value="rating_gt" {% if sort_type == 'rating_gt' %}selected{% endif %}>Ascending rating
+            </option>
+            <option value="rating_lt" {% if sort_type == 'rating_lt' %}selected{% endif %}>Descending rating</option>
+        </select>
+    </div>
+
+    <table class="table caption-top">
+        <caption>{{ query.name }}</caption>
+        <thead>
+        <tr>
+            <td>CID</td>
+            <td>Name</td>
+            <td>Address</td>
+            <td>Rating</td>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for place in places %}
+            <tr>
+                <td><a href="{% url 'parsing:query_place_detail' query.slug place.slug %}">{{ place.cid }}</a></td>
+                <td>{{ place.name }}</td>
+                <td>{{ place.address|isValue }}</td>
+                <td>{{ place.rating }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    {% include 'parsing/include/pagination.html' with page=places %}
+    {% if request.user|hasGroup:'SuperAdmin' %}
+        <a href="{% url 'parsing:query_delete' query.pk %}" class="button is-danger aligned right">Delete query</a>
+    {% endif %}
+{% endblock %}

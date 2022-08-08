@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    body {
+        font-family: sans-serif;
+        padding: 0;
+        margin: 0;
+    }
+
+    input[type="color"] {
+        -webkit-appearance: none;
+        border: none;
+        width: 32px;
+        height: 32px;
+        background: none;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch {
+        border: 1px solid grey;
+        box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
+        border-radius: 100%;
+    }
+
+    #city_name {
+        color: {{ text_color }};
+        margin: auto;
+        width: 100%;
+        margin-top: -35px;
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .map_content {
+        width: 100%;
+        padding: 50px 0px;
+    }
+
+    .map_wrapper {
+        border: 1px solid grey;
+        border-radius: 5px;
+        display: block;
+        width: 95%;
+        max-width: {{ max_width }}px;
+        margin: 10px auto;
+    }
+
+    .city_map {
+        fill: {{ map_color }};
+        cursor: pointer;
+    }
+
+    .cities_list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        list-style-type: none;
+        font-size: 19px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px;
+        width: 95%;
+        max-width: {{ max_width }}px;
+        margin: 0px auto;
+    }
+
+    #state_cities {
+        stroke: {{ map_border_color }};
+        stroke-width: 30px;
+    }
+
+    #cities_list {
+        color: {{ text_color }};
+    }
+
+    .cities_list li {
+        margin-bottom: 10px;
+        cursor: pointer;
+        width: 30%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cities_list li a {
+        width: 50%;
+    }
+
+    .cities_list li a:hover span, .text_over {
+        background-color: #dedede8c;
+    }
+
+    .cities_list li a span {
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .color_item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: auto 10px;
+    }
+
+</style>
+<div class="map_content">
+    <input type="text" id="copyInput" style="display: none">
+    <div id="map_wrapper" class="map_wrapper">
+        <h3 id="city_name">{{ state.name }}</h3>
+        {% if state.get_svg %}
+            <svg id="state_cities" xmlns="http://www.w3.org/2000/svg"
+                 style="position: relative;height: 100%;width: 100%;"
+                 xmlns:xlink="http://www.w3.org/1999/xlink"
+                 version="1.1"
+                 viewBox="{{ viewbox }}">
+                {{ state.get_svg.svg }}
+            </svg>
+        {% else %}
+            {{ state.svg|safe }}
+        {% endif %}
+    </div>
+    <ul id="cities_list" class="cities_list">
+
+    </ul>
+</div>
+<script>
+    let first_color = "{{ map_hover_color }}";
+    let second_color = '{{ map_color }}';
+
+    function rgb2hex(rgb) {
+        if (rgb[0] === '#') {
+            return rgb
+        }
+        var rgbs = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+
+        return (rgbs && rgbs.length === 4) ? "#" +
+            ("0" + parseInt(rgbs[1], 10).toString(16)).slice(-2) +
+            ("0" + parseInt(rgbs[2], 10).toString(16)).slice(-2) +
+            ("0" + parseInt(rgbs[3], 10).toString(16)).slice(-2) : '';
+    }
+
+    function get_first_color() {
+        return first_color
+    }
+
+    function get_second_color() {
+        return second_color
+    }
+
+    function changeColor(elem, first_color, second_color) {
+        elem.style.fill = rgb2hex(elem.style.fill) === first_color ? second_color : first_color;
+    }
+
+    function clickedCity(city) {
+        document.location.href = `/${city.id.toLowerCase().replaceAll('_', '-')}/`
+    }
+
+    function showCity(city) {
+        if (city.tagName === 'path') {
+            changeColor(city, get_first_color(), get_second_color());
+        } else {
+            let paths = city.children;
+            for (let i = 0; i < paths.length; i++) {
+                let path = paths[i];
+                changeColor(path, get_first_color(), get_second_color());
+            }
+        }
+    }
+
+    function showCityName(city, number) {
+        let city_id = city.id;
+        let city_name = document.getElementById('city_name');
+        city_name.innerText = city_id.replaceAll('_', ' ');
+        let city_text = document.getElementById('cities_list').children[number].children[0].children[0];
+        city_text.classList.toggle('text_over')
+    }
+
+    let state_cities = document.getElementById('state_cities').children;
+    // console.log(state_cities);
+    let cities = {};
+    for (let i = 0; i < state_cities.length; i++) {
+        let city = state_cities[i];
+        cities[i] = city.id;
+        city.classList.add('city_map');
+        // console.log(city.id);
+        city.addEventListener('mouseover', function () {
+            showCityName(city, i);
+            showCity(city);
+        });
+        city.addEventListener('mouseout', function () {
+            let city_id = city.id;
+            let city_name = document.getElementById('city_name');
+            city_name.innerText = city_id.replaceAll('_', ' ');
+            let city_text = document.getElementById('cities_list').children[i].children[0].children[0];
+            city_text.classList.remove('text_over')
+
+            if (city.tagName === 'path') {
+                city.style.fill = second_color;
+            } else {
+                let paths = city.children;
+                for (let i = 0; i < paths.length; i++) {
+                    let path = paths[i];
+                    path.style.fill = second_color;
+                }
+            }
+        });
+        city.addEventListener('click', function () {
+            clickedCity(city);
+        });
+    }
+
+
+    function showCityMap(city_number) {
+        let city = state_cities[city_number];
+        let city_name = document.getElementById('city_name');
+        city_name.innerText = city.id.replaceAll('_', ' ');
+        showCity(city);
+    }
+</script>
+<div style="    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    z-index: 10000;
+    flex-direction: column;
+}">
+    <textarea name="" id="copy_textarea" style="width: 500px; height: 300px; opacity: .8" cols="30"
+              rows="10"></textarea>
+</div>
+<script>
+    let cities_list = document.getElementById('cities_list');
+    for (let i in cities) {
+        let city = `<li class="city"><a href="/${cities[i].replaceAll('_', '-').toLowerCase()}/" onmouseover="showCityMap('${i}')" onmouseout="showCityMap('${i}')"><span>${cities[i].replaceAll('_', ' ')}</span></a></li>`
+        cities_list.innerHTML = cities_list.innerHTML + city
+
+    }
+
+    let body = document.getElementsByTagName('body')[0];
+    let copy_body = body.cloneNode(deep = true);
+    let copy_body_children = copy_body.children;
+    let text = ''
+    for (let i = 0; i < copy_body_children.length - 2; i++) {
+        text += copy_body_children[i].outerHTML
+    }
+    text.replaceAll(' ', '');
+
+    let textarea = document.getElementById('copy_textarea')
+    textarea.value = text;
+    textarea.select();
+    document.execCommand("copy");
+
+</script>
+</body>
+</html>

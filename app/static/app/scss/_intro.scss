@@ -1,0 +1,315 @@
+/* 
+** Intro Section Styles
+*/
+
+.page_slider {
+  position: relative;
+  overflow: hidden;
+  //fix slider bug on small screens
+  clear: both;
+  & > img {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 3em;
+    margin: 0;
+    line-height: 1;
+  }
+  h3 {
+    font-size: 2em;
+    margin: 0;
+    line-height: 1;
+  }
+  h4 {
+    font-size: 1.5em;
+    margin: 0;
+  }
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  @media(min-width: 992px) {
+    h2 {
+      font-size: 6em;
+    }
+    h3 {
+      font-size: 3em;
+    }
+    h4 {
+      font-size: 2.5em;
+    }
+    p {
+      font-size: 16px;
+    }
+  }
+
+  .flex-direction-nav .flex-prev {
+    left: 2%;
+    opacity: 1;
+  }
+  .flex-direction-nav .flex-next {
+    right: 2%;
+    opacity: 1;
+  }
+
+  .flexslider {
+    //making every slide same height (stretch) for nice background on every slide
+    .slides {
+      display: flex;
+    }
+
+    //ie bugfix with page_slider overlap
+    &:before,
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .intro_layer img {
+      width: auto;
+      display: inline-block;
+    }
+
+    //uncomment if you need a shadow on your slider
+    &.slider-shadow {
+      padding-bottom: 50px;
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        background: transparent;
+        z-index: 1;
+        bottom: 65px;
+        left: 10px;
+        width: 50%;
+        height: 20%;
+        max-width: 400px;
+        box-shadow: 0 25px 20px rgba(0, 0, 0, 0.3);
+        transform: rotate(-3deg);
+      }
+      &:after {
+        right: 10px;
+        left: auto;
+        transform: rotate(3deg);
+      }
+    }
+  }
+
+  .intro_layers_wrapper {
+    display: flex;
+  }
+
+  .intro_after_featured_word {
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .intro_layers {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 0;
+    @media (max-width: 767px) {
+      padding: 38px 0 40px;
+    }
+  }
+
+  //dots - horizontal
+  .flex-control-nav {
+    position: absolute;
+    width: 100%;
+    bottom: 55px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    @media (max-width: 991px) {
+      display: none;
+    }
+
+    li {
+      display: block;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      a {
+        border-color: $lightColor;
+        background: $lightColor;
+        opacity: 0.5;
+        &.flex-active {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+@media(max-width:991px) {
+  .container-fluid,
+  .container,
+  img + .container {
+    top: 53% !important;
+  }
+}
+
+
+  //lg and bigger layout
+  @media(min-width: 767px) {
+
+    .cs,
+    .ds {
+      background-color: transparent;
+    }
+
+    //description alignment
+    //for intro with testimonials,
+    //for static intro
+    //.flexslider prefix removed
+    .container-fluid,
+    .container,
+    img + .container {
+      position: absolute;
+      top: 50%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+
+    }
+
+    // center alignment for slide description
+    .intro_layers_wrapper {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 15px;
+      left: 15px;
+      height: 100%;
+      z-index: 5;
+
+      @media (min-width: 600px) {
+        .boxed & {
+          padding-left: 60px;
+          padding-right: 60px;
+        }
+      }
+    }
+
+    .intro_text_top .intro_layers {
+      justify-content: flex-start;
+    }
+    .intro_text_bottom .intro_layers {
+      justify-content: flex-end;
+    }
+
+    .intro_before_featured_word {
+      line-height: 0.8;
+      font-size: 20px;
+      margin: 0;
+      padding: 0 0.2em;
+      font-weight: 300;
+      @media (max-width: 400px) {
+      font-size: 25px;
+      }
+    }
+    .intro_featured_word {
+      line-height: 0.9;
+      font-size: 54px;
+      margin: 24px 0;
+    }
+
+    .intro_after_featured_word {
+      font-size: 16px;
+      font-weight: 300;
+      margin: 39px 0 10px;
+    }
+
+  }
+
+  @media (max-width: 1199px) {
+    .intro_featured_word {
+      font-size: 30px !important;
+      margin-bottom: 10px;
+    }
+    .intro_after_featured_word {
+      font-size: 16px;
+      font-weight: 300;
+      margin: 0;
+    }
+  }
+
+    @media (max-width: 991px) {
+    .intro_featured_word {
+      margin-bottom: 10px; 
+      margin-top: 10px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .flex-direction-nav {
+      display: none;
+    }
+  }
+
+  //md and smaller - static container on small device
+  @media (max-width: 767px) {
+    & {
+      text-align: center;
+    }
+  }
+  form.search-course {
+    margin-top: 33px;  
+     i {
+        opacity: 1 !important;
+        color: #fff;
+      }
+    @media (max-width: 767px) {
+      .form-group {
+        max-width: 100% !important;
+        margin: 0 auto; 
+      }
+      input[type="search"] {
+        max-width: 100% !important;
+      }
+      margin-top: 20px;  
+      .search-submit {
+        margin-top: 25px;
+      }
+    }
+    @media (max-width: 1199px) {
+      .form-group {
+        max-width: none;
+      }
+      margin-top: 20px; 
+      i {
+        opacity: 1 !important;
+      } 
+      input[type="search"] {
+        max-width: 215px;
+      }
+    }
+    input[type="search"] {
+      background-color: transparent;
+      border: 2px solid $lightColor;
+    }
+  }
+}
+
+.intro_layers_wrapper.icon-layer {
+  left: 27%;
+  @media (max-width: 767px) {
+    display: none;
+  }
+  @media (max-width: 1199px) {
+    left: 6%;
+  }
+}
+
+@media (max-width: 767px) {
+  .intro_before_featured_word {
+    margin-bottom: 15px !important;
+  }
+}
+

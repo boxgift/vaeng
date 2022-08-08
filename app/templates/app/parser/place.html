@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static app_tags %}
+
+{% block title %}
+    {{ place.title|default:place.name }} Reviews | {{ place.city_service.city.name }}, VA
+{% endblock %}
+
+{% block head %}
+    <meta name="description" content="{{ place.description|default:'Read customer feedback about, '|add:place.name|add:' and talking your experience and opinion about them on VAeng.' }}"
+          >
+    <script type="application/ld+json">
+{#    {#}
+{#      "@context": "https://schema.org/",#}
+{#      "@type": "LocalBusiness",#}
+{#      "name": "{{ place.name }}",#}
+{#      "address": "{{ place.address }}",#}
+{#      "telephone": "{{ place.phone_number }}",#}
+{#      "image": "{{ place.cloud_img.get_default_img }}",#}
+{#      "description": "{{ place.description }}",#}
+{#      "aggregateRating": {#}
+{#        "@type": "AggregateRating",#}
+{#        "ratingValue": "{{ place.rating }}",#}
+{#        "reviewCount": "{{ place.rating_user_count }}"#}
+{#      }#}
+{#    }#}
+{#        {% if place.faq and place.faq.questions %}#}
+{#            {#}
+{#              "@context": "https://schema.org",#}
+{#              "@type": "FAQPage",#}
+{#              "mainEntity": [#}
+{#              {% for question in place.faq.questions.all|slice:"3" %}#}
+{#                  {#}
+{#                    "@type": "Question",#}
+{#                    "name": "{{ question.question }}",#}
+{#                    "acceptedAnswer": {#}
+{#                      "@type": "Answer",#}
+{#                      "text": "{{ question.answer }}"#}
+{#                    }#}
+{#                  }{% if not forloop.last %},{% endif %}#}
+{#              {% endfor %}#}
+{#              ]#}
+{#            }#}
+{#        {% endif %}#}
+        </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Place",
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "40.75",
+        "longitude": "73.98"
+      },
+      "name": "{{ place.name }}",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ place.rating }}",
+        "reviewCount": "{{ place.rating_user_count }}"
+      },
+      "telephone": "{{ place.phone_number }}",
+      "url" : "http://www.greatfood.com",
+      "address": "{{ place.address }}",
+      "image": "{{ place.cloud_img.get_default_img }}"
+      }
+    </script>
+    {% if place.meta %}
+        <meta content="{{ place.meta|default:place.description }}" name="description">
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'app/chief-slider/chief-slider.min.css' %}">
+    <script src="{% static 'app/chief-slider/chief-slider.min.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const slider = new ChiefSlider('.slider', {
+                loop: false
+            });
+        });
+    </script>
+    <style>
+        .slider__wrapper {
+            overflow: hidden;
+        }
+
+        .slider__item {
+            flex: 0 0 33.3333333333%;
+            max-width: 33.3333333333%;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 7rem;
+            padding: 5px;
+        }
+
+        .slider__item img {
+            height: 100%;
+            margin: 0px 10px;
+        }
+
+
+        input[type="radio"] + label:before {
+
+            border: 0px solid #d8efdb;
+            border-radius: 0%;
+            content: "";
+            display: inline;
+            background: white;
+            height: auto;
+            margin-bottom: 0px;
+            margin-right: 0px;
+            vertical-align: auto;
+            width: auto;
+        }
+
+        input[type="radio"]:checked + label:before {
+            background-clip: content-box;
+            background-color: white;
+            padding: 0px;
+        }
+
+        @media screen and (max-width: 1024px) {
+
+            .slider__item {
+                flex: none !important;
+                max-width: 250px;
+                width: 250px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ place.name }}</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app:city_detail' city_service.city.slug %}">{{ city_service.city.name }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app:city_service_detail' city_service.city.slug city_service.service.slug %}">{{ city_service.service.name }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span>{{ place.name }}</span>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content_section %}
+    {% include 'app/parser/include/place/card.html' with place=place %}
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function closeModal() {
+            let modal = document.getElementById('modal');
+            modal.classList.toggle('is-active');
+        }
+    </script>
+    <script src="{% static 'app/js/rating_check.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,111 @@
+<aside class="col-lg-5 col-xl-4">
+    <div class="widget widget_search ds p-30 rounded">
+        <h3 class="widget-title">Search</h3>
+        <form role="search" method="get" class="search-form" action="/">
+            <label for="search-form-widget">
+                <span class="screen-reader-text">Search for:</span>
+            </label>
+            <input type="search" id="search-form-widget" class="search-field" placeholder="" value=""
+                   name="search">
+            <button type="submit" class="search-submit">
+                <span class="screen-reader-text">Search</span>
+            </button>
+        </form>
+    </div>
+
+
+    <div class="widget widget_slider">
+
+        <h3 class="widget-title">News slider</h3>
+        <div class="owl-carousel" data-nav="true" data-loop="false" data-autoplay="true" data-items="1"
+             data-responsive-lg="1" data-responsive-md="1" data-responsive-sm="1"
+             data-responsive-xs="1">
+
+            {% for item in items %}
+                <div class="vertical-item rounded bordered content-padding">
+                    {% if item.img %}
+                        <div class="item-media rounded">
+                            <img src="{{ item.img.url }}" alt="">
+                        </div>
+                    {% else %}
+                        <span class="text-center vaeng-text" style="height: 150px">
+                                                VAeng
+                                            </span>
+                    {% endif %}
+                    <div class="item-content">
+                        <h6 class="lh-30">
+                            <a href="{{ item.get_absolute_url }}">
+                                {{ item.name }}
+                            </a>
+                        </h6>
+                        <p class="slide-except">
+                            {% if item.content %}
+                                {{ item.content|striptags|truncatechars:30 }}
+                            {% endif %}
+                        </p>
+                        <p class="item-meta">
+{#                            <a href="{{ item.get_absolute_url }}">#}
+{#                                <i class="icon-m-calendar-alt"></i>#}
+{#                                {{ item.date_create }}#}
+{#                            </a>#}
+                        </p>
+
+                    </div>
+                </div>
+                <!-- .vertical-item -->
+            {% endfor %}
+
+        </div>
+        <!-- .owl-carousel -->
+
+    </div>
+    <!-- .widget_slider -->
+
+    {% if tags %}
+        <div class="widget widget_tag_cloud">
+
+            <h3 class="widget-title">Tags</h3>
+
+            <div class="tagcloud">
+                {% for tag_item in tags %}
+                    <a href="{% if path == 'blog' %}{{ tag_item.get_blogs_url }}{% else %}{{ tag_item.get_pages_url }}{% endif %}" class="tag-cloud-link" {% if tag_item.name == tag.name %}style="color: white; background-color: #6fcd07"{% endif %}>
+                        {{ tag_item.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="widget widget_popular_entries">
+
+        <h3 class="widget-title">Popular News</h3>
+        <ul class="list-unstyled">
+            {% for item in items %}
+                <li class="media align-items-center bordered rounded">
+                    {% if page.img %}
+                        <a class="media-image" href="{{ item.get_absolute_url }}">
+                            <img class="rounded" src="{{ item.img.url }}" alt="">
+                        </a>
+                    {% else %}
+                        <span class="media-image text-center vaeng-text rounded">
+                                                VAeng
+                                            </span>
+                    {% endif %}
+                    <div class="media-body">
+                        <h4>
+                            <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
+                        </h4>
+                        <span class="posted-on">
+{#                												<a class="grey-link" href="#">#}
+{#                													<i class="icon-m-calendar-alt"></i>#}
+{#                													<time class="entry-date published updated"#}
+{#                                                                          datetime="">{{ item.date_create }}</time>#}
+{#                												</a>#}
+                											</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</aside>

@@ -1,0 +1,51 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Services
+{% endblock %}
+
+{% block style %}
+    <style>
+        .service_card {
+            border: 1px solid orange;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="#">Service</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" class="input" style="width: 430px" name="name">
+        <button type="submit" class="button is-success text-center">
+            create
+        </button>
+        <a href="{% url 'parsing:service_autocreate' %}" class="button is-warning text-center">
+            autocreate
+        </a>
+    </form>
+    <div class="columns is-multiline mt-3">
+        {% for service in services %}
+            <div class="column is-3">
+                <a href="{{ service.get_absolute_url }}" class="card p-3 has-text-warning service_card"
+                   style="color: #ffb020 !important;">
+                    {{ service.name }}
+                </a>
+            </div>
+        {% empty %}
+            <span class="has-text-grey">Services not found</span>
+        {% endfor %}
+    </div>
+    {% include 'parsing/include/pagination.html' with page=services %}
+{% endblock %}

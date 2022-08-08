@@ -1,0 +1,162 @@
+/* bootstrap collapse*/
+//unstyled
+[data-toggle="collapse"] {
+  display: inline-block;
+  position: relative;
+  padding-right: 20px;
+  margin-bottom: 10px;
+  @media (max-width: 767px) {
+    padding-right: 0;
+  }
+  &:after {
+    font-weight: 100;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -9px;
+    font-size: 16px;
+    font-family: 'FontAwesome';
+    content: "\f106";
+    @media (max-width: 767px) {
+      display: none;
+    } 
+  }
+  &.collapsed {
+    &:after {
+      content: "\f107";
+    }
+  }
+}
+
+//cards as tabs
+[role="tablist"] {
+  .card {
+    border-radius: 0;
+    border: none;
+    background: none;
+  }
+  .card-header {
+    padding: 0;
+    background: none;
+    border: none;
+    a {
+      border-radius: 5px;
+      font-size: 16px;
+      border: 1px solid $colorMain4;
+      display: block;
+      position: relative;
+      padding: 15px 31px;
+      background-color: $colorMain;
+      color: $lightColor;
+      &:before,
+      &:after {
+        text-align: center;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 100;
+        content: '';
+        width: 60px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        color: $lightColor;
+        transition: opacity 0.3s ease-in-out;
+      }
+      &:after {
+        font-family: 'FontAwesome';
+        height: 30px;
+        line-height: 30px;
+        margin-top: -14px;
+        vertical-align: top;
+        top: 50%;
+        bottom: auto;
+        content: "\f106";
+        background: none;
+      }
+      &:hover {
+        color: #fff;
+        opacity: 1;
+        &:before,
+        &:after {
+          //opacity: 0.9;
+        }
+      }
+      &.collapsed {
+        background-color: $lightColor;
+        color: $darkColor;
+        i {
+          margin-right: 10px;
+          color: $colorMain;
+        }
+        &:hover {
+          background-color: $colorMain;
+          color: #fff;
+          i {
+            color: #fff;
+          }
+          &:after {
+            color: #fff;
+          }
+        }
+        &:after {
+          color: $darkColor;
+          content: "\f107";
+          margin-top: -15px;
+        }
+      }
+    }
+  }
+  .card-body {
+    padding: 13px 30px 45px;
+  }
+  .media img {
+    max-width: 80px;
+  }
+}
+
+.course-tab {
+  .tab-padding {
+    padding: 47px 29px 41px;
+    border-bottom: 1px solid $colorMain4;
+    @media (max-width: 767px) {
+      padding: 29px 20px 26px;
+    }
+    &:last-child {
+      border-bottom: 0;
+    }
+    .tab-header {
+      margin-bottom: 0;
+      span {
+        width: 70px;
+        font-weight: 500;
+        color: $colorMain;
+        font-size: 54px;
+        margin-right: 6px;
+        margin-top: -5px;
+        @media (max-width: 767px) {
+          width: 55px;
+          font-size: 43px;
+        }
+      }
+      a.collapsed span {
+        color: $fontColor;
+      }
+    }
+    .author-course {
+      a {
+        font-weight: 500;
+        margin-left: 15px;
+      }
+    }
+  }
+  .card-body {
+    padding: 13px 40px 2px 75px;
+    @media (max-width: 767px) {
+      padding: 10px 0 0;
+    }
+  }
+  [data-toggle="collapse"] {
+    display: block;
+  }
+}

@@ -1,0 +1,31 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" class="custom_form">
+        <span class="form_title">Вход</span>
+        {% csrf_token %}
+
+        <div class="field">
+            <label for="" class="label">
+                Username
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="username">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Password
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="password">
+            </div>
+        </div>
+        <button type="submit" class="button is-info">Login</button>
+        <a href="{% url 'parsing:registration' %}" class="centered_link">Registration</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags %}
+
+
+{% block title %}
+    My reviews
+{% endblock %}
+
+
+
+{% block content %}
+    <h2 class="block_title">My reviews</h2>
+    <div class="columns is-centered">
+        <div class="column is-9">
+            {% for review in reviews %}
+                {% include 'parsing/include/review/card.html' with review=review %}
+            {% empty %}
+                <p class="text_centered" style="color:grey;">You have not left any feedback yet</p>
+            {% endfor %}
+            {% if reviews %}
+                {% include 'parsing/include/pagination.html' with page=reviews %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

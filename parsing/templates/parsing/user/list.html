@@ -1,0 +1,38 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags %}
+
+{% block title %}
+    Users
+{% endblock %}
+
+
+{% block content %}
+    <table class="table is-bordered">
+        <thead>
+        <tr style="text-align: center;">
+            <th>Name</th>
+            <th>Role</th>
+            <th>Registration</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.last_name }} {{ user.first_name }}</td>
+                <td>{% if user.groups.count %}{{ user.groups.first }}{% else %}-{% endif %}</td>
+                <td>{{ user.date_joined }}</td>
+                <td>
+                    <a href="{% url 'parsing:user_detail' user.pk %}">
+                    <span class="icon block_centered" style="color: orange">
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% include 'parsing/include/pagination.html' with page=users %}
+{% endblock %}

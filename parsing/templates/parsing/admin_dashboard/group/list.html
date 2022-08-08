@@ -1,0 +1,40 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Группы
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:admin_dashboard' %}">Admin</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Roles</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <table class="table is-bordered">
+        <thead>
+        <tr style="text-align: center;">
+            <th>Role</th>
+            <th>User count</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for group in groups %}
+            <tr>
+                <td><a href="{% url 'parsing:group_detail' group.pk %}">{{ group.name }}</a></td>
+                <td>{{ group.user_set.count }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td><a href="{% url 'parsing:group_not' %}">Users without a role</a></td>
+            <td>{{ groups_not_count }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+{% endblock %}

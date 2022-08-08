@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Blog
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+{% block content_section %}
+    <section class="ls s-py-60 s-py-lg-100">
+        <div class="container">
+
+            {% if request.user.is_superuser %}
+                <div style="margin: 10px auto; display: flex; justify-content: end; align-items: center">
+                    <a href="{% url 'app:blog_create' %}" class="btn btn-outline-maincolor2">Create</a>
+                </div>
+            {% endif %}
+            <div class="row c-gutter-40">
+
+                {#                <main class="col-lg-7 col-xl-8">#}
+                <main class="col-lg-7 col-xl-8 order-lg-2">
+                    {% for blog in blogs %}
+                        <article
+                                class="post side-item text-center text-md-left event-post content-padding rounded bordered event-post">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-md-5">
+                                    <div class="item-media cover-image rounded-left"
+                                         {% if not blog.img %}style="background-color: #222a35"{% endif %}>
+                                        {% if blog.img %}
+                                            <img src="{{ blog.img.url }}" alt="">
+                                        {% else %}
+                                            <span class="text-center vaeng-text">
+                                                VAeng
+                                            </span>
+                                        {% endif %}
+                                        <div class="media-links">
+                                            <a class="abs-link" title="" href="{{ blog.get_absolute_url }}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-8 col-lg-7 col-md-6">
+                                    <div class="item-content">
+
+                                        <h6 class="lh-30">
+                                            <a href="{{ blog.get_absolute_url }}">{{ blog.name }}</a>
+                                        </h6>
+
+                                        <p class="item-meta color-darkgrey">
+                                            <i class="fa fa-calendar color-main"></i>
+                                            <span>{{ blog.date_create }}</span>
+                                            {#												<i class="fa fa-clock-o color-main"></i> <span>01:15 pm - 04:30 pm</span>#}
+                                        </p>
+                                        <p>
+                                            {% if blog.content %}
+                                                {{ blog.content|striptags|truncatechars:150 }}{% endif %}
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                    {% include 'app/include/pagination.html' with pages=blogs %}
+                </main>
+
+                {% include 'app/include/sidebar.html' with items=popular_blogs tags=tags path=path %}
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

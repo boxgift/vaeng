@@ -1,0 +1,30 @@
+<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    {% if page.has_previous %}
+        <a href="?{% for tag in tags_checked %}tags={{ tag.id }}&{% endfor %}{% if search %}search={{ search }}&{% endif %}{% if sort_type %}sorted={{ sort_type }}&{% endif %}{% if selected_user %}user={{ selected_user.username }}&{% endif %}page={{ page.previous_page_number }}"
+           class="pagination-previous"><<</a>
+    {% else %}
+        <a href="#" class="pagination-previous is-disabled"><<</a>
+    {% endif %}
+    {% if page.has_next %}
+        <a href="?{% for tag in tags_checked %}tags={{ tag.id }}&{% endfor %}{% if search %}search={{ search }}&{% endif %}{% if sort_type %}sorted={{ sort_type }}&{% endif %}{% if selected_user %}user={{ selected_user.username }}&{% endif %}page={{ page.next_page_number }}"
+           class="pagination-next">>></a>
+    {% else %}
+        <a href="#" class="pagination-next is-disabled">>></a>
+    {% endif %}
+    <ul class="pagination-list">
+        {% if page.has_previous %}
+            <li><a class="pagination-link"
+                   href="?{% for tag in tags_checked %}tags={{ tag.id }}&{% endfor %}{% if search %}search={{ search }}&{% endif %}{% if sort_type %}sorted={{ sort_type }}&{% endif %}{% if selected_user %}user={{ selected_user.username }}&{% endif %}page={{ page.previous_page_number }}">{{ page.previous_page_number }}</a>
+            </li>
+        {% endif %}
+
+        <li><a class="pagination-link is-current">{{ page.number }}</a></li>
+
+        {% if page.has_next %}
+            <li><a class="pagination-link"
+                   href="?{% for tag in tags_checked %}tags={{ tag.id }}&{% endfor %}{% if search %}search={{ search }}&{% endif %}{% if sort_type %}sorted={{ sort_type }}&{% endif %}{% if selected_user %}user={{ selected_user.username }}&{% endif %}page={{ page.next_page_number }}">{{ page.next_page_number }}</a>
+            </li>
+        {% endif %}
+
+    </ul>
+</nav>

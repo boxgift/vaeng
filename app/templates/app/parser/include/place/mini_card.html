@@ -1,0 +1,8 @@
+<div class="col-12 pt-10 pb-10 col-md-3">
+    <a href="{% url 'app:place_detail' place.slug %}" class="card"
+       style="height: 250px; text-align: center">
+        <img src="{{ place.get_cloud_img.get_default_img }}" style="height: 200px" width="100%" alt="{{ place.name }}"
+             rel="nofollow">
+        <p>{{ place.name|truncatechars:'40' }}</p>
+    </a>
+</div>

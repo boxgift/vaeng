@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    404 - Not Found
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+{% block content_section %}
+    <section class="ds ds s-pt-70 s-pb-70 error-404 not-found page_404">
+				<div class="container">
+					<div class="row">
+
+						<div class="d-none d-lg-block divider-70"></div>
+
+						<div class="col-sm-12 text-center">
+
+							<header class="page-header">
+								<img src="{% static 'app/img/404.png' %}" alt="">
+								<h2 class="not-found">
+									404<br> Page Not Found
+								</h2>
+							</header>
+							<!-- .page-header -->
+
+							<div class="page-content">
+								<div id="search-404" class="widget">
+									<form role="search" method="get" class="search-form search-course" action="/">
+										<div class="form-group has-placeholder">
+											<label for="search-form-widget">
+												<span class="screen-reader-text">Search for:</span>
+											</label>
+											<i class="fa fa-search" style="left: 40px !important;"></i>
+											<input type="search" id="search-form-widget" class="search-field form-control" placeholder="" value="" name="search">
+											<button type="submit" class="search-submit btn btn-maincolor">SEARCH</button>
+										</div>
+									</form>
+								</div>
+								<!-- .page-content -->
+							</div>
+						</div>
+					</div>
+					<div class="d-none d-lg-block divider-70"></div>
+				</div>
+			</section>
+{% endblock %}

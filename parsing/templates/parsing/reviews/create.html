@@ -1,0 +1,24 @@
+{% extends 'parsing/base.html' %}
+{% load static %}
+
+{% block title %}
+    Create review
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:city_list' %}">City</a></li>
+            <li><a href="{{ place.city_service.city.get_absolute_url }}">{{ place.city_service.city.name }}</a></li>
+            <li><a href="{{ place.city_service.get_absolute_url }}">{{ place.city_service.service.name }}</a></li>
+            <li><a href="{{ place.get_absolute_url }}">{{ place.name }}</a></li>
+            <li class="is-active"><a href="#">Write review</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    {% include 'parsing/include/review/form.html' %}
+    <script src="{% static 'parsing/js/rating_check.js' %}"></script>
+{% endblock %}

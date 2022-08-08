@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Review create
+{% endblock %}
+
+{% block head %}
+
+    <style>
+        input[type="radio"] + label:before {
+
+            border: 0px solid #d8efdb;
+            border-radius: 0%;
+            content: "";
+            display: inline;
+            background: white;
+            height: auto;
+            margin-bottom: 0px;
+            margin-right: 0px;
+            vertical-align: auto;
+            width: auto;
+        }
+
+        input[type="radio"]:checked + label:before {
+            background-clip: content-box;
+            background-color: white;
+            padding: 0px;
+        }
+    </style>
+{% endblock %}
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ place.name }}</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app:city_detail' city_service.city.slug %}">{{ city_service.city.name }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app:city_service_detail' city_service.city.slug city_service.service.slug %}">{{ city_service.service.name }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app:place_detail' place.slug %}">{{ place.name }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span>Write review</span>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content_section %}
+    <div class="container mb-30">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h6><a href="" class="link"></a></h6>
+                {% include 'app/parser/include/review/form.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'app/js/rating_check.js' %}"></script>
+{% endblock %}

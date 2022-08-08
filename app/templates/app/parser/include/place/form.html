@@ -1,0 +1,45 @@
+<form action="" method="post" class="custom_form" style="width: 70%; display: block; margin:30px auto;">
+    {% csrf_token %}
+    <div class="field">
+        <label for="" class="label">
+            Title
+        </label>
+        <div class="control">
+            <input type="text" required class="input" name="title" placeholder="Title"
+                   value="{% if place.title %}{{ place.title }}{% else %}{{ place.name }}{% endif %}">
+        </div>
+    </div>
+    <div class="field">
+        <label for="" class="label">
+            Meta
+        </label>
+        <div class="control">
+            <textarea type="text" required class="textarea" name="meta"
+                      placeholder='<meta name="description" content="content">'>{% if place.meta %}
+                {{ place.meta }}{% else %}<meta>{% endif %}</textarea>
+        </div>
+    </div>
+    <div class="field">
+        <label for="" class="label">
+            Name
+        </label>
+        <div class="control">
+            <input type="text" required class="input" name="name" placeholder="Name" value="{{ place.name }}">
+        </div>
+    </div>
+    <div class="field">
+        <label for="" class="label">
+            Description
+        </label>
+        <div class="control">
+            <textarea type="text" required class="textarea" name="description" placeholder="">{% if place.description %}
+                {{ place.description }}{% else %}{{ place.get_meta_description }}{% endif %}</textarea>
+        </div>
+    </div>
+
+    {#        <label class="checkbox">#}
+    {#            <input class="checkbox" type="checkbox" name="detail">#}
+    {#            Детальный поиск#}
+    {#        </label>#}
+    <button type="submit" class="button is-info centered">Edit</button>
+</form>

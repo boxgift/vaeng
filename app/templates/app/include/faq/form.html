@@ -1,0 +1,39 @@
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div id="faq_questions">
+            {% for question in questions %}
+                {% include 'parsing/include/faq/card.html' with question=question.question answer=question.answer %}
+            {% empty %}
+                {% include 'parsing/include/faq/card.html' %}
+            {% endfor %}
+        </div>
+        <div style="display: flex; justify-content: space-between">
+            <div>
+                <span onclick="add_question_field()" class="button">Add</span>
+                <span onclick="delete_question_field()" class="button">Delete</span>
+            </div>
+            <button class="button is-success mt-2">Change</button>
+        </div>
+    </form>
+    <script>
+
+        let faq_form = document.getElementById('faq_questions');
+
+        function add_question_field() {
+            let question_field = document.getElementsByClassName('question_field')[0].cloneNode(true);
+            question_field.getElementsByTagName('input')[0].value = '';
+            question_field.getElementsByTagName('textarea')[0].value = '';
+            faq_form.appendChild(question_field);
+        }
+
+        function delete_question_field() {
+
+            let question_fields = document.getElementsByClassName('question_field');
+            if (question_fields.length > 1) {
+                let question_field = question_fields[question_fields.length - 1]
+                faq_form.removeChild(question_field)
+            }
+        }
+    </script>
+</div>

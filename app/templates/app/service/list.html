@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Service
+{% endblock %}
+
+{% block head %}
+
+    <style>
+        .custom_button {
+
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            margin: 4px 5px;
+            font-size: 1rem;
+            line-height: 1.5;
+            background: #5caf01;
+            color: white;
+            border-radius: 0.25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            --color-shadow: hsla(240, 8%, 12%, 0.15);
+            --color-shadow: hsla(var(--color-black-h), var(--color-black-s), var(--color-black-l), 0.15);
+            box-shadow: 0 4px 16px hsl(240deg 8% 12% / 15%);
+            box-shadow: 0 4px 16px hsla(var(--color-black-h), var(--color-black-s), var(--color-black-l), 0.15);
+            cursor: pointer;
+
+        }
+    </style>
+{% endblock %}
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Service</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span>Service</span>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content_section %}
+    <div class="container mb-30">
+        <div class="row mt-10">
+            <ol class="service_list" style="display: flex; width: 100%; flex-wrap: wrap">
+                {% for service in services %}
+                    <li class="custom_button" style="width: 30%; text-align: center">
+                        <a href="{% url 'app:service_detail' service.slug %}" style="color: white"
+                           class="link">{{ service.name }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,159 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags static %}
+{% block title %}
+    Reviews | {{ place.title|default:place.name }}
+{% endblock %}
+
+{% block style %}
+    {% if place.faq and place.faq.questions %}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+          {% for question in place.faq.questions.all|slice:"3" %}
+              {
+                "@type": "Question",
+                "name": "{{ question.question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ question.answer }}"
+                }
+              }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          ]
+        }
+        </script>
+    {% endif %}
+
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <link rel="stylesheet" href="{% static 'parsing/faq/css/style.css' %}">
+    <style>
+        .cd-faq__trigger {
+            color: inherit;
+        }
+    </style>
+
+    <link rel="stylesheet" href="{% static 'parsing/chief-slider/chief-slider.min.css' %}">
+    <script src="{% static 'parsing/chief-slider/chief-slider.min.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const slider = new ChiefSlider('.slider', {
+                loop: false
+            });
+        });
+    </script>
+    <style>
+        .slider__wrapper {
+            overflow: hidden;
+        }
+
+        .slider__item {
+            flex: 0 0 33.3333333333%;
+            max-width: 33.3333333333%;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 7rem;
+            padding: 5px;
+        }
+
+        .slider__item img {
+            height: 100%;
+            margin: 0px 10px;
+        }
+    </style>
+    <style>
+        .iframe_wrap iframe {
+            box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+            border-radius: 5px;
+            display: block;
+            margin: auto;
+        }
+
+        .base_rating_area {
+            display: block;
+            margin: 10px auto;
+            width: fit-content;
+        }
+
+        #base_rating {
+            font-size: 27px;
+            color: gold;
+            font-weight: 600;
+        }
+    </style>
+{% endblock %}
+
+{% block meta %}
+    {% if place.meta %}
+        <meta content="{{ place.meta|default:place.description }}" name="description">
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:city_list' %}">City</a></li>
+            <li><a href="{{ place.city_service.city.get_absolute_url }}">{{ place.city_service.city.name }}</a></li>
+            <li><a href="{{ place.city_service.get_absolute_url }}">{{ place.city_service.service.name }}</a></li>
+            {#    <li class="breadcrumb-item"><a href="{{ place.query.get_absolute_url }}">{{ place.query.name }}</a></li>#}
+            <li class="is-active"><a href="#" aria-current="page">{{ place.name }}</a></li>
+        </ul>
+    </nav>
+
+{% endblock %}
+
+{% block content %}
+    <div class="modal" id="modal" onclick="closeModal()">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p class="image is-4by3">
+                <img src="" alt="" id="place_image" style="border-radius: 5px" rel="nofollow">
+            </p>
+        </div>
+        <button class="modal-close is-large" aria-label="close" onclick=""></button>
+    </div>
+    {% include 'parsing/include/place/card.html' with place=place %}
+    <hr>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'parsing/faq/js/util.js' %}"></script>
+    <script src="{% static 'parsing/faq/js/main.js' %}"></script>
+
+    <script>
+        function showImg() {
+            let modal = document.getElementById('modal');
+            modal.classList.toggle('is-active');
+        }
+
+        function showModalImg(url) {
+            let img = document.getElementById('place_image');
+            img.setAttribute('src', url);
+            showImg();
+        }
+
+        function closeModal() {
+            let modal = document.getElementById('modal');
+            modal.classList.toggle('is-active');
+        }
+    </script>
+    <script src="{% static 'parsing/js/rating_check.js' %}"></script>
+    {#    <script>#}
+    {#        function toggleActive(elem) {#}
+    {#            if (!elem.classList.contains('is-active')) {#}
+    {#                let tab_elements = document.querySelectorAll('li.tab');#}
+    {#                tab_elements.forEach((element) => {#}
+    {#                    let data_box_id = element.getAttribute('data-box');#}
+    {#                    let data_box = document.getElementById(data_box_id);#}
+    {#                    data_box.classList.toggle('show');#}
+    {#                    element.classList.toggle('is-active')#}
+    {#                })#}
+    {#            }#}
+    {#        }#}
+    {#    </script>#}
+{% endblock %}

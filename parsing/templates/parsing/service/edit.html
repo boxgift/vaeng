@@ -1,0 +1,23 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    {{ service.name }} | EDIT
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label for="" class="label">Name</label>
+            <input class="input" type="text" name="name" value="{{ service.name }}">
+        </div>
+        <div class="field">
+            <label for="" class="label">Description</label>
+            <textarea class="textarea" name="description" id="" cols="30"
+                      rows="10">{{ service.description|default:'' }}</textarea>
+        </div>
+        <button type="submit" class="button">
+            EDIT
+        </button>
+    </form>
+{% endblock %}

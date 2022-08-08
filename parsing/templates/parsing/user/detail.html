@@ -1,0 +1,68 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    {{ user.last_name }} {{ user.first_name }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:admin_dashboard' %}">Admin</a></li>
+            <li><a href="{% url 'parsing:user_list' %}">Users</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ user.last_name }} {{ user.first_name }}</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <form action="" class="custom_form" method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label for="" class="label">
+                Username
+            </label>
+            <div class="control">
+                <input type="text" required class="input" name="username" value="{{ user.username }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Last name
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="last_name" value="{{ user.last_name }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                First name
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="first_name" value="{{ user.first_name }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Email
+            </label>
+            <div class="control">
+                <input type="email" class="input" name="email" value="{{ user.email }}">
+            </div>
+        </div>
+
+
+        <div class="field">
+            <div class="select">
+                <select name="groups">
+                    {% for group in groups %}
+                        <option value="{{ group.pk }}"
+                                {% if group in user.groups.all %}selected{% endif %}>{{ group.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="button is-info">Edit</button>
+    </form>
+
+{% endblock %}

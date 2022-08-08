@@ -1,0 +1,12 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Админ панель
+{% endblock %}
+
+{% block content %}
+    <a class="navbar-item" href="{% url 'parsing:group_list' %}">Roles</a>
+    <a class="navbar-item" href="{% url 'parsing:user_list' %}">Users</a>
+    <a class="navbar-item" href="{% url 'parsing:user_list' %}">Modules</a>
+    <a class="navbar-item" href="#">Settings</a>
+{% endblock %}

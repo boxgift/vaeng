@@ -1,0 +1,65 @@
+{% load app_tags static %}
+<style>
+    .place_img {
+        width: 300px !important;
+        min-width: 300px !important;
+        height: 200px !important;
+        max-height: 100%;
+        margin-right: 20px;
+        border-radius: 5px;
+    }
+
+    @media (max-width: 767px) {
+        .place_img {
+            margin-bottom: 10px;
+            width: 100% !important;
+            min-width: auto !important;
+            height: 250px !important;
+        }
+
+        .place {
+            flex-direction: column !important;
+        }
+    }
+</style>
+<div class="column is-9 " style="width: 100%;padding: 10px; box-sizing: border-box">
+    <div class="box place_little_card">
+        <div style="display: flex;" class="place place_card_img_info">
+            <a href="{% url 'app:place_detail' place.slug %}" class="">
+                <img class="place_img"
+                     src="
+                             {% if place.cloud_img %}{{ place.cloud_img.get_default_img }}{% else %}{% static 'parsing/img/not_found_place.png' %}{% endif %}"
+                     alt="{{ place.name }}" rel="nofollow">
+            </a>
+            <div style="flex-grow: 1;" class="">
+                        <span style="color: black;
+    text-align: center;
+    display: block;
+    border-bottom: 1px solid grey;margin: 0px;
+;">
+                            <a href="{% url 'app:place_detail' place.slug %}"><h2
+                                    style="font-size: 18px; font-weight: 400; margin-bottom: 3px">{{ place.name }}</h2></a></span>
+                <span><b>Rating</b>: {{ place.rating }} ({{ place.rating_user_count }})</span><br>
+                <span><b>Address</b>: {{ place.address|isValue }}</span><br>
+                <span><b>Phone</b>: <a
+                        href="tel:{{ place.phone_number }}">{{ place.phone_number|isValue }}</a></span><br>
+                <span><b>Description</b>:
+                                {% if place.description %}{{ place.description }}{% else %}
+                                    {{ place.get_meta_description }}{% endif %}</span><br>
+            </div>
+            <div class="rating_line"
+                 style="background: #ffa81e;border-radius: 6px;font-weight: 400;position:absolute;right: 15%;height: 60px;width: 60px;padding: 20px;box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);display: flex;justify-content: center;align-items: center;">
+                <span style="color: #fff; font-size: 24px">{{ place.rating }}</span>
+            </div>
+        </div>
+        <span>Reviews: {{ place.reviews.count }}</span>
+        {% with place.get_more_text as review %}
+            {% if review %}
+                <div style="margin: 20px auto">
+                    {% include 'app/parser/include/review/card.html' with review=review %}
+                    {#                    {% include 'app/parser/include/review/card.html' with review=review %}#}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+</div>

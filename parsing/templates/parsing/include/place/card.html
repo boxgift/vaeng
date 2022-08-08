@@ -1,0 +1,142 @@
+{% load parsing_tags %}
+<div class="" id="detail_data" style="padding-bottom: 50px">
+    {% if place.is_redirect and request.user|hasGroup:'Redactor' %}
+        <article class="message is-warning">
+            <div class="message-body">
+                This page has a <a href="{{ place.redirect }}" class="link">redirect</a>, it is visible only to the site
+                administrator
+            </div>
+        </article>
+    {% endif %}
+
+    {% if request.user|hasGroup:'Admin' %}
+        <div class="place_admin_buttons">
+            <a href="{% url 'parsing:place_edit_archive' place.pk %}"
+               title="Edit"
+               class="button {% if place.archive %}is-danger{% else %}is-success{% endif %} is-light is-outlined centered mr-1"
+               style="width: fit-content">
+                {% if place.archive %}<i class="fa fa-lock"></i>{% else %}<i class="fa fa-lock-open"></i>{% endif %}
+            </a>
+            <a href="{% url 'parsing:place_edit' place.pk %}"
+               title="Edit"
+               class="button is-success is-light is-outlined centered mr-1"
+               style="width: fit-content"><i class="fa fa-edit"></i></a>
+            <a href="{% url 'parsing:place_edit_faq' place.pk %}"
+               title="FAQ"
+               class="button is-warning is-light is-outlined centered mr-1"
+               style="width: fit-content"><i class="fa fa-question"></i></a>
+            <a href="{% url 'parsing:place_reviews_uniqueize' place.pk %}"
+               title="Uniqueize"
+               class="button is-info is-light is-outlined centered mr-1"
+               style="width: fit-content"><i class="fa fa-comment-alt"></i></a>
+        </div>
+    {% endif %}
+
+    <div class="columns place_card mt-4">
+        <div class="box place_card_info column is-one-third-desktop is-full-mobile is-full-tablet is-narrow"
+             style="padding: 0px; margin-right: 10px; height: fit-content; background-color: #FAFAFA">
+            <h1 class="place_img_name has-text-centered mt-2">{{ place.name }}</h1>
+            <img src="{{ place.get_cloud_img.get_default_img }}" alt="" class="place_base_img" rel="nofollow">
+            <div class="place-info" style="padding: 10px">
+                <p><i class="fa fa-building has-text-success"></i> <span>{{ place.name }}</span></p>
+                <hr>
+                <p><i class="fa fa-map-marker-alt has-text-success"></i> <span>{{ place.address|isValue }}</span></p>
+                <hr>
+                {% if place.timetable %}
+                    <span style="display: flex;">
+                        <i class="fa fa-calendar-alt has-text-success mt-1"></i>
+                            <table class="place_timetable">
+                                {{ place.timetable|safe }}
+                            </table>
+                    </span>
+                    <hr>
+                {% endif %}
+                <p><i class="fa fa-globe has-text-success"></i> <span><a
+                        href="{{ place.site|isSite }}">{{ place.site|isSite }}</a></span></p>
+                <hr>
+                <p><i class="fa fa-phone has-text-success"></i> <span><a
+                        href="tel:{{ place.phone_number }}">{{ place.phone_number|isValue }}</a></span></p>
+                <hr>
+                <p><i class="fa fa-star has-text-success"></i> <span>{{ place.rating }} (<span
+                        style="color: #9c9c9c">{{ place.rating_user_count }}</span>)</span></p>
+            </div>
+            <div class="maps">
+                <!--noindex-->{{ place.coordinate_html|default:''|safe }}<!--/noindex-->
+            </div>
+        </div>
+        <div class="column place_card_description is-two-thirds-desktop is-full-mobile is-full-tablet">
+            <article>
+
+                <h5>Description:</h5>
+                <span>
+                        {% if place.description %}
+                            {{ place.description }}
+                        {% else %}
+                            {{ place.get_meta_description }}
+                        {% endif %}
+                </span>
+            </article>
+            <article>
+                <div style="display: flex; justify-content: space-between;flex-wrap: wrap; margin: 15px auto">
+                    {% if place.photos.count > 0 %}
+                        <div class="slider">
+                            <div class="slider__wrapper">
+                                <div class="slider__items">
+                                    {% for photo in place.photos.all %}
+                                        <div class="slider__item box m-2">
+                                            <img src="{{ photo.cloud_img.get_thumbnail_img }}" alt="" class=""
+                                                 style="height: 100%;margin: 3px;width: 100%; border-radius: 10px;"
+                                                 onclick="showModalImg('{{ photo.cloud_img.get_thumbnail_img }}')"
+                                                 rel="nofollow">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <a href="#" class="slider__control" data-slide="prev"></a>
+                            <a href="#" class="slider__control" data-slide="next"></a>
+                        </div>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </article>
+            <article>
+                <h3 class="block_title">Reviews</h3>
+                {% if not my_review %}
+                    <a href="{% url 'parsing:review_create' place.slug %}" class="button is-success"
+                       style="position: absolute;margin-top: -45px;right: 0px;background: #ff764d;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"
+                             style="width: 60%;height: 66%;margin-right: 10px;">
+                            <path fill="#fff"
+                                  d="M54.67285,0.91553L51.5,4.08838l-1.38281-1.38281c-1.13281-1.13281-3.10156-1.13281-4.23438,0	L3.29297,45.29346l0,0l0,0l-0.14014,0.14014c-0.13428,0.13428-0.22803,0.3042-0.26904,0.48975L0.02393,58.78271	c-0.07422,0.33398,0.02734,0.68262,0.26904,0.92432C0.48242,59.89648,0.73779,60,1,60c0.07227,0,0.14502-0.00781,0.21729-0.02393	l12.85986-2.85986c0.18555-0.04102,0.35547-0.13428,0.48975-0.26904l38.43298-38.43121l0.87854,0.87848	c0.39014,0.39014,0.39014,1.02441,0.00049,1.41455L41.29297,33.29395c-0.39063,0.39063-0.39063,1.02344,0,1.41406	c0.19531,0.19531,0.45117,0.29297,0.70703,0.29297s0.51172-0.09766,0.70703-0.29297l12.58643-12.58496	c1.16895-1.16992,1.16895-3.07275-0.00049-4.24268l-0.87878-0.87866l2.88269-2.88257	c0.56641-0.56641,0.87793-1.31787,0.87793-2.11719s-0.31152-1.55078-0.87793-2.1167L55.914,8.50238l3.17242-3.17279	C59.67578,4.74121,60,3.95752,60,3.12256c0-0.83447-0.32422-1.61816-0.91309-2.20703	C57.87012-0.30127,55.88965-0.30127,54.67285,0.91553z M4.49176,47.90625l7.60236,7.60199l-9.77673,2.17438L4.49176,47.90625z M13.99976,54.58575l-8.58545-8.58502L42.99994,8.41644l8.58582,8.58545L13.99976,54.58575z M55.88281,12.70508l-2.88275,2.88257	l-8.586-8.58527l2.88281-2.88275c0.37695-0.37695,1.0293-0.37695,1.40625,0l7.17969,7.18018	c0.18848,0.18799,0.29199,0.4375,0.29199,0.70215C56.1748,12.26709,56.07129,12.5166,55.88281,12.70508z M57.67285,3.91504	l-3.17291,3.17328l-1.58588-1.58588l3.17285-3.17285c0.4375-0.4375,1.14844-0.4375,1.58594,0C57.94336,2.6001,58,2.91016,58,3.12256	S57.94336,3.64453,57.67285,3.91504z"></path>
+                        </svg>
+                        <span>Write review</span>
+                    </a>
+                {% else %}
+                    <span href="" class="button is-success"
+                          style="position: absolute;margin-top: -45px;right: 0px;">
+                    <span>Review saved</span>
+                </span>
+                {% endif %}
+                <br>
+                <div class="columns is-centered">
+                    <div class="column is-12">
+                        {% if my_review %}
+                            {% include 'parsing/include/review/card.html' with review=my_review border_color='#48c78e' %}
+                        {% endif %}
+                        {% for review in reviews %}
+                            {% include 'parsing/include/review/card.html' with review=review %}
+                        {% endfor %}
+
+
+                        {% include 'parsing/include/pagination.html' with page=reviews %}
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <article>
+        {% if place.faq %}
+            {% include 'parsing/include/faq/block.html' with questions=place.faq.questions %}
+        {% endif %}
+    </article>
+</div>

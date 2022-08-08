@@ -1,0 +1,17 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    {{ user.profile.full_name }} | Reviews
+{% endblock %}
+
+{% block content %}
+    <h4 style="text-align: center; margin-bottom: 30px">{{ user.profile.full_name }}</h4>
+    <div class="columns is-centered">
+        {% for review in reviews %}
+            <div class="column is-10">
+                {% include 'parsing/include/review/card.html' with review=review %}
+            </div>
+        {% endfor %}
+    </div>
+    {% include 'parsing/include/pagination.html' with page=reviews %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'parsing/base.html' %}
+{% load static %}
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block style %}
+    <style>
+        #access_status {
+            display: block;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        #access_input {
+            display: none;
+        }
+    </style>
+    {#    <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>#}
+    <script src="{% static 'parsing/ckeditor/build/ckeditor.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <h4 class="centered_link">{{ query.name }}</h4>
+    <form action="" method="post" class="custom_form" style="max-width: 900px">
+        {% csrf_token %}
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: row">
+            <input type="checkbox" {% if query.access %} checked {% endif %} name="access" id="access_input">
+            <label for="access_input" class="button" id="access_status"></label>
+        </div>
+        <div class="field">
+            <label for="page_content" class="label">
+                Content
+            </label>
+            <div class="control">
+                <textarea type="text" class="textarea" name="content" id="page_content">{% if query.content %}
+                    {{ query.content }}{% else %}{% endif %}</textarea>
+            </div>
+        </div>
+
+        {#        <label class="checkbox">#}
+        {#            <input class="checkbox" type="checkbox" name="detail">#}
+        {#            Детальный поиск#}
+        {#        </label>#}
+        <div class="tag_items">
+            {% for tag in tags %}
+                <div class="tag_item">
+                    <input type="checkbox" id="tag_{{ tag.id }}" style="display: none" name="tags" value="{{ tag.id }}"
+                           {% if tag in query.tags.all %}checked{% endif %}>
+                    <label for="tag_{{ tag.id }}" class="button is-success is-outlined"
+                           style="margin: 3px">{{ tag.name }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="button is-info centered">Edit</button>
+    </form>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#page_content'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        let input = document.getElementById('access_input');
+        input.addEventListener('change', accessChanged)
+
+        function accessChanged() {
+            let access_status = document.getElementById('access_status')
+            if (input.checked) {
+                access_status.innerText = 'Opened access'
+                access_status.classList.add('is-success')
+            } else {
+                access_status.innerText = 'Closed access'
+                access_status.classList.remove('is-success')
+            }
+        }
+
+        accessChanged()
+    </script>
+{% endblock %}

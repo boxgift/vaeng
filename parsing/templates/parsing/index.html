@@ -1,0 +1,57 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags %}
+
+{% block title %}
+    Главная
+{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <div class="statistic_text">
+            <h3>Site statistics</h3>
+            {% if request.user|hasGroup:'Admin' %}
+                <p>
+                <table class="table is-fullwidth is-narrow is-bordered"
+                       style="max-width: 450px; width: 90%; margin: auto">
+                    <tr>
+                        <th colspan="5">Full</th>
+                        <th rowspan="3" style="vertical-align: middle">All</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Success</th>
+                        <th rowspan="2" style="vertical-align: middle">Wait</th>
+                        <th rowspan="2" style="vertical-align: middle">Error</th>
+                        <th rowspan="2" style="vertical-align: middle">Not started</th>
+                    </tr>
+                    <tr>
+                        <th>Open</th>
+                        <th>Archive</th>
+                    </tr>
+                    <tr>
+                        <td class="has-text-success">{{ statistic.open.count }}</td>
+                        <td class="has-text-info">{{ statistic.close.count }}</td>
+                        <td class="has-text-info">{{ statistic.wait.count }}</td>
+                        <td class="has-text-info">{{ statistic.error.count }}</td>
+                        <td class="has-text-info">{{ statistic.not_started.count }}</td>
+                        <td class="has-text-danger">{{ statistic.all.count }}</td>
+                    </tr>
+                    <tr>
+                        <td class="has-text-success">{{ statistic.open.percent }}%</td>
+                        <td class="has-text-info">{{ statistic.close.percent }}%</td>
+                        <td class="has-text-info">{{ statistic.wait.percent }}%</td>
+                        <td class="has-text-info">{{ statistic.error.percent }}%</td>
+                        <td class="has-text-info">{{ statistic.not_started.percent }}%</td>
+                        <td class="has-text-danger">{{ statistic.all.percent }}%</td>
+                    </tr>
+                </table>
+                </p>
+                <p>Services count: {{ services_count }}</p>
+                <p>Cities count: {{ cities_count }}</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="welcome_text">Site dedicated to finding places, <a href="{% url 'login' %}">Login</a> or <a
+                href="{% url 'parsing:registration' %}">Registration</a></p>
+    {% endif %}
+
+{% endblock %}

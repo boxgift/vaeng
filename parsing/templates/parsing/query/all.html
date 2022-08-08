@@ -1,0 +1,53 @@
+{% extends 'parsing/base.html' %}
+{% load static %}
+{% block title %}
+    List of all query
+{% endblock %}
+
+{% block content %}
+    {% if queries %}
+        <div class="select">
+        </div>
+        <h4 class="block_title">Query group</h4>
+        <table class="table caption-top">
+            <thead class="table-light">
+            <tr>
+                <td>Name</td>
+                <td>Link</td>
+                <td>Created</td>
+                <td>Pages</td>
+                <td>Time</td>
+                <td>Count</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for query in queries %}
+                <tr>
+                    <td class="td_flex">
+                        <img src="
+                    {% if query.status == 'success' %}{% static 'parsing/img/success.svg' %}{% endif %}
+                    {% if query.status == 'warning' %}{% static 'parsing/img/warning.svg' %}{% endif %}
+                    {% if query.status == 'wait' %}{% static 'parsing/img/wait.svg' %}{% endif %}
+                    {% if query.status == 'error' %}{% static 'parsing/img/error.svg' %}{% endif %}
+                    " alt="" width="20px" height="20px">
+
+                        <a href="{{ query.get_absolute_url }}">{{ query.name }}</a>
+                    </td>
+                    <td><a class="link"
+                           href='https://www.google.com/search?q={{ query.name }}&newwindow=1&tbm=lcl&sxsrf=AOaemvJF91rSXoO-Kt8Dcs2gkt9_JXLlCQ%3A1632305149583&ei=_f9KYayPI-KExc8PlcaGqA4&oq={{ query.name }}&gs_l=psy-ab.3...5515.12119.0.12483.14.14.0.0.0.0.0.0..0.0....0...1c.1.64.psy-ab..14.0.0....0.zLZdDbmH5so#rlfi=hd:;'>
+                        link
+                    </a>
+                    </td>
+                    <td>{{ query.user.first_name }}</td>
+                    <td>{% if query.page %}{{ query.page }}{% else %}Все{% endif %}</td>
+                    <td>{{ query.date_create }}</td>
+                    <td>{{ query.places_count }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% include 'parsing/include/pagination.html' with page=queries %}
+    {% else %}
+        <p class="centered_link">Queries have not been created yet</p>
+    {% endif %}
+{% endblock %}

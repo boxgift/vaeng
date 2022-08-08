@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Create blog
+{% endblock %}
+
+{% block head %}
+    {#    <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>#}
+    <script src="{% static 'parsing/ckeditor/build/ckeditor.js' %}"></script>
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+
+{% block content_section %}
+    <section class="ls s-pt-55 s-pb-55 s-pt-lg-95 s-pb-lg-95">
+        <div class="container">
+            <div class="row">
+                <main class="col-lg-12">
+                    <article>
+                        <!-- .entry-header -->
+                        <div class="entry-content">
+                            <div class="woocommerce">
+
+                                <!--
+    <div class="woocommerce-message">Are you sure you want to log out? <a
+        href="shop-account-login.html">Confirm and log out</a>
+    </div>
+    -->
+
+                                <form action="" class="woocomerce-form woocommerce-form-login login text-center"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <p></p>
+                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                        <label for="title">Blog title <span class="required">*</span>
+                                        </label>
+                                        <input type="text"
+                                               class="woocommerce-Input woocommerce-Input--text input-text text-center"
+                                               name="title" id="username" placeholder="">
+                                    </p>
+                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                        <label for="meta">Blog description <span class="required">*</span>
+                                        </label>
+                                        <textarea
+                                                class="woocommerce-Input woocommerce-Input--text input-text text-center"
+                                                name="meta" id="meta" placeholder=""></textarea>
+                                    </p>
+                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                        <label for="name">Blog name <span class="required">*</span>
+                                        </label>
+                                        <input type="text"
+                                               class="woocommerce-Input woocommerce-Input--text input-text text-center"
+                                               name="name" id="name" placeholder="">
+                                    </p>
+                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide ckeditor_wrap">
+                                        <label for="content">Blog content <span class="required">*</span>
+                                        </label>
+                                        <textarea id="page_content"
+                                                  class="woocommerce-Textarea woocommerce-Textarea--text input-text text-center"
+                                                  name="content" placeholder=""></textarea>
+                                    </p>
+                                    <div class="tags">
+                                        {% for tag in tags %}
+                                            <div class="tag">
+                                                <input type="checkbox" name="tag_{{ tag.pk }}" id="tag_{{ tag.pk }}">
+                                                <label for="tag_{{ tag.pk }}"
+                                                       class="btn btn-outline-success">{{ tag.name }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <hr>
+                                    <p class="form-row">
+                                        <button type="submit" class="woocommerce-Button button" value="Edit">Create
+                                        </button>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- .entry-content -->
+                    </article>
+
+
+                </main>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#page_content'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+{% endblock %}

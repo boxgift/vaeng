@@ -1,0 +1,100 @@
+{% extends 'parsing/base.html' %}
+{% load static %}
+
+{% block title %}
+    Place edit
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{{ place.get_absolute_url }}">{{ place.name }}</a>
+            </li>
+            <li class="is-active"><a href="#">Edit</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'parsing/css/switch.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h4 class="centered_link">{{ place.name }}</h4>
+    <form action="" method="post" class="custom_form">
+        {% csrf_token %}
+        <div class="field">
+            <label for="" class="label">
+                Place title
+            </label>
+            <div class="control">
+                <input type="text" required class="input" name="title" placeholder="Title"
+                       value="{% if place.title %}{{ place.title }}{% else %}{{ place.name }}{% endif %}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Place meta tag
+            </label>
+            <div class="control">
+                <textarea type="text" required class="textarea" name="meta"
+                          placeholder='<meta name="description" content="content">'>{% if place.meta %}{{ place.meta }}
+                {% else %}<meta>{% endif %}</textarea>
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Place name
+            </label>
+            <div class="control">
+                <input type="text" required class="input" name="name" placeholder="Name" value="{{ place.name }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Place description (<a href="{% url 'parsing:place_generate_description' place.slug %}"
+                                      class="link is-info">Generate description</a>)
+            </label>
+            <div class="control">
+                <textarea type="text" required class="textarea" name="description"
+                          placeholder="">{% if place.description %}{{ place.description }}{% else %}
+                    {{ place.get_meta_description }}{% endif %}</textarea>
+            </div>
+        </div>
+        <div class="field">
+            <span class="label" style="text-align: center">Redirect</span>
+            <label class="switch" style="margin: auto; display: block">
+                <input type="checkbox" id="is_redirect" name="is_redirect" {% if place.is_redirect %}checked{% endif %}>
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="field">
+            <label class="label" for="redirect">Redirect to</label>
+            <input class="input" type="text" id="redirect" name="redirect" value="{{ place.redirect|default:'' }}">
+        </div>
+
+        {#        <label class="checkbox">#}
+        {#            <input class="checkbox" type="checkbox" name="detail">#}
+        {#            Детальный поиск#}
+        {#        </label>#}
+        <button type="submit" class="button is-info centered">Edit</button>
+    </form>
+
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        let is_redirect = document.getElementById('is_redirect');
+
+        function redirect_change() {
+            let redirect = document.getElementById('redirect')
+            console.log(is_redirect.checked)
+            redirect.disabled = !is_redirect.checked;
+        }
+
+        redirect_change()
+        is_redirect.addEventListener('change', redirect_change)
+    </script>
+{% endblock %}

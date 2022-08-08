@@ -1,0 +1,137 @@
+{% extends 'parsing/base.html' %}
+{% load static parsing_tags %}
+
+{% block title %}
+    Rating compilation
+{% endblock %}
+
+{% block style %}
+    <style>
+        #places tr:nth-child(20), #places tr:nth-child(1) {
+            background-color: #ffa084 !important;
+        }
+
+        #places tr {
+            cursor: grab;
+        }
+
+        #places tr:active {
+            cursor: grabbing !important;
+        }
+
+        {% for number in 20|toRange %}
+            #places tr:nth-child({{ number }}) td:first-child::after {
+                content: "{{ number }}"
+            }
+        {% endfor %}
+    </style>
+    <script src="{% static 'parsing/Sortable-master/Sortable.min.js' %}"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:queries' %}">Places</a></li>
+            <li><a href="{% url 'parsing:places' query.slug %}">{{ query.name }}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Rating</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <span id="token">
+        {% csrf_token %}
+    </span>
+    <table>
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+            <th>Rating</th>
+            <th>Address</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody id="places">
+        {% for place in places %}
+            <tr {% if forloop.counter <= 20 %} style="background-color: #ffe395" {% endif %}>
+                <td style="display: none" class="place_position" data-place-id="{{ place.id }}"></td>
+                <td class="place_position">{{ forloop.counter }}</td>
+                <td class="place_name"><a href="{% url 'parsing:query_place_detail' query.slug place.slug %}">{{ place.name }}</a></td>
+                <td>{{ place.rating }} | {{ place.rating_user_count }} | {{ place.reviews.count }}</td>
+                <td title="{{ place.address }}">{{ place.address|truncatechars:20 }}</td>
+                <td>{{ place.get_description|truncatechars:20 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button onclick="getRating()" class="button is-info is-medium" style="
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+">Сохранить
+    </button>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+        new Sortable(document.getElementById('places'), {
+            {#handle: '.handle',#}
+            animation: 150,
+            delayOnTouchOnly: true,
+            removeCloneOnHide: false,
+            ignore: '.place_position'
+        });
+    </script>
+    <script>
+        function getToken() {
+            return document.getElementById('token').children[0].getAttribute('value');
+        }
+
+        function showMessage(message) {
+            console.log(2)
+            let message_span = document.getElementById('message')
+            message_span.innerText = message;
+        }
+
+        async function getRating() {
+            let trs = document.getElementById('places').children;
+            trs = [...trs].slice(0, 20)
+            let index = 0;
+            let data = [];
+            for (let item of trs) {
+                index++;
+                let place_id = Number(item.children[0].getAttribute("data-place-id"));
+                console.log(`PlaceID: ${place_id}   Index: ${index}`)
+                data.push({"place_id": place_id, "index": index})
+            }
+            let post_data = {"data": data}
+            console.log(post_data);
+            let r = await postData('{{ request.path }}', post_data);
+
+            location.reload();
+        }
+
+        async function postData(url = '', data = {}) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getToken()
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *client
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            let response_data = response.json()
+            return await response_data; // parses JSON response into native JavaScript objects
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% load parsing_tags %}
+<div class="column is-10" style="padding: 10px; box-sizing: border-box">
+
+    <div class="box place_little_card">
+        <span class="top_place_number">{{ forloop.counter }}</span>
+        <span class="top_place_number number_right" style="color:gold;">{{ place.rating }}</span>
+        <div style="display: flex; " class="place">
+            <a href="{{ place.get_absolute_url }}">
+                <img src="{{ place.get_cloud_img.get_default_img }}" alt="{{ place.name }}" class="place_img"
+                     rel="nofollow">
+            </a>
+            <div class="place_preview_card_info" style="flex-grow: 1;">
+                <span style="color: black;
+    text-align: center;
+    display: block;
+    border-bottom: 1px solid grey;margin: 0px;
+;">
+                    <h2 style="font-size: 18px"><a
+                            href="{{ place.get_absolute_url }}">{{ place.name }}</a></h2>
+                </span>
+                <span><b>Rating</b>: {{ place.rating }} ({{ place.rating_user_count }})</span><br>
+                <span><b>Address</b>: {{ place.address|isValue }}</span><br>
+                <span><b>Phone</b>: <a
+                        href="tel:{{ place.phone_number }}">{{ place.phone_number|isValue }}</a></span><br>
+                <span><b>Description</b>:
+                                {% if place.description %}{{ place.description|truncatechars:200 }}
+                                    <a class="link" href="{{ place.get_absolute_url }}">more</a>{% else %}
+                                    {{ place.get_meta_description|truncatechars:200 }}{% endif %}</span><br>
+            </div>
+            {% if request.user|hasGroup:'SuperAdmin' %}
+                <a href="{% url 'parsing:place_edit_archive' place.pk %}?next={% url 'parsing:city_service_list' %}"
+                   style="position:absolute; right: 10%"
+                   class="{% if place.archive %}has-text-danger{% else %}has-text-success{% endif %}">
+                    {% if place.archive %}
+                        <i class="fa fa-lock"></i>
+                    {% else %}
+                        <i class="fa fa-lock-open"></i>
+                    {% endif %}
+                </a>
+            {% endif %}
+        </div>
+        <span>Reviews: {{ place.reviews.count }}</span>
+        {% with place.get_more_text as review %}
+            {% if review %}
+                <div style="margin-top: 5px;">
+                    {% include 'parsing/include/review/card.html' with review=review %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+</div>

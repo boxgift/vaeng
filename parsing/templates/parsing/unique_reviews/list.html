@@ -1,0 +1,44 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Unique reviews
+{% endblock %}
+
+{% block content %}
+    <h1 style="font-size: 21px">Unique reviews</h1>
+    {% for unique_review in unique_reviews %}
+        <div style="padding: 10px; border: 1px solid lightgrey; border-radius: 5px; margin-bottom: 10px">
+            <div style="margin-bottom: 10px; display: flex; justify-content: space-between">
+                <span>
+                    <a href="
+                    {% if unique_review.place %}
+                        {{ unique_review.place.get_absolute_url }}
+                    {% else %}
+                        {% if unique_review.city_service %}
+                            {{ unique_review.city_service.get_absolute_url }}
+                        {% else %}
+                            #
+                        {% endif %}
+                    {% endif %}
+                    ">{{ unique_review.get_name }}</a><br>
+                    <span class="has-text-{{ unique_review.status_color }}">{{ unique_review.reviews_checked }} reviews / {{ unique_review.reviews_count }} reviews</span><br>
+                    <span class="has-text-{{ unique_review.status_color }}">{{ unique_review.percent }}% / 100%</span>
+                </span>
+                <span style="">
+                    {{ unique_review.date_create|date:'Y-m-d H:i' }}
+                    {% if unique_review.date_end %}
+                        - {{ unique_review.date_end|date:'H:i' }}
+                    {% endif %}
+                </span>
+            </div>
+            <progress class="progress is-{{ unique_review.status_color }}" value="{{ unique_review.percent }}"
+                      max="100">{{ unique_review.percent }}</progress>
+        </div>
+    {% empty %}
+        <div style="color: grey">
+            Uniqueize review not created
+        </div>
+    {% endfor %}
+
+    {% include 'parsing/include/pagination.html' with page=unique_reviews %}
+{% endblock %}

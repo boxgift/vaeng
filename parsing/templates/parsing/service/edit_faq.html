@@ -1,0 +1,23 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Edit FAQ
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></li>
+            <li class="is-active"><a href="#">FAQ</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h1>
+        FAQ
+    </h1>
+    <span class="has-text-grey">{{ service.name }}</span>
+    {% include 'parsing/include/faq/form.html' with questions=service.faq.questions.all %}
+{% endblock %}

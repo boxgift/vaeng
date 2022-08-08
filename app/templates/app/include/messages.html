@@ -1,0 +1,9 @@
+{% for message in messages %}
+    <div style="position: fixed;
+    z-index: 10000;
+    margin-top: 67px;
+    width: 100%;
+    opacity: 0.9;" class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+        <span class="{{ message.tags }}">{{ message|safe }}</span>
+    </div>
+{% endfor %}

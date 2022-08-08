@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+
+{% block title_section %}
+
+{% endblock %}
+
+{% block style %}
+    <style>
+        .cities_list a {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            margin: 4px 5px;
+            font-size: 1rem;
+            line-height: 1.5;
+            background: #5caf01;
+            color: white;
+            border-radius: 0.25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            --color-shadow: hsla(240, 8%, 12%, 0.15);
+            --color-shadow: hsla(var(--color-black-h), var(--color-black-s), var(--color-black-l), 0.15);
+            box-shadow: 0 4px 16px hsl(240deg 8% 12% / 15%);
+            box-shadow: 0 4px 16px hsla(var(--color-black-h), var(--color-black-s), var(--color-black-l), 0.15);
+            cursor: pointer;
+
+        }
+
+        @media screen and (max-width: 720px) {
+            #search_city_input {
+                margin-top: 30px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content_section %}
+    <section class="page_title s-pt-50 s-pb-40 s-pt-lg-130 s-pb-lg-90">
+        <div class="container">
+            <div class="row">
+                <input type="text" class="input mb-30" id="search_city_input" placeholder="Enter city name">
+                <div class="cities_list" id="cities_list">
+                    {% for city in cities %}
+                        <a href="{% url 'app:city_detail' city.slug %}" class="link">{{ city.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="ls s-pt-55 s-pb-15 s-pt-lg-95 s-pb-lg-30 c-gutter-10 c-mb-20 category-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    {#                    <h6 class="special-heading fw-300 text-center">Empower Yourself</h6>#}
+                    <h2 class="text-center">Categories</h2>
+                </div>
+                <div class="divider-10 d-none d-md-block"></div>
+                {% for category in categories %}
+                    <div class="col-lg-4 col-sm-6">
+                        <div class="icon-box text-center">
+                            <h6 class="fw-700" style="margin-bottom: 10px">
+                                <a href="{{ category.get_absolute_url }}" style="    color: white;
+    background: #222a35;
+    width: initial;
+    display: block;
+    padding: 10px;
+    border-radius: 10px
+;">{{ category.name.capitalize }}</a>
+                            </h6>
+                            <p>
+                                Pages: {{ category.pages.all.count }}
+                            </p>
+                        </div>
+                        <span class="media-links">
+								<a class="abs-link" title="" href="{{ category.get_absolute_url }}"></a>
+							</span>
+                    </div><!-- .col-* -->
+                {% endfor %}
+                <div class="d-none d-lg-block divider-20"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <section
+            class="ds ms s-pt-60 s-pb-20 s-pt-lg-125 s-pb-lg-130 c-gutter-100 c-mb-40 c-mb-md-0 video-section text-center text-md-left">
+        <div class="cover-image s-cover-left"></div><!-- half image background element -->
+        <div class="container">
+            <div class="divider-45 d-none d-lg-block"></div>
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="item-media post-thumbnail">
+                        <div class="embed-responsive embed-responsive-3by2">
+                            <a href="https://www.youtube.com/embed/bo316DYYy80" class="embed-placeholder">
+                                <img src="images/video-image.jpg" alt="">
+                            </a>
+                        </div>
+                    </div><!-- .post-thumbnail -->
+                </div>
+                <div class="col-md-6">
+                    <div class="item-content">
+                        <h6 class="special-heading fw-300">Personable Virtual Assistants</h6>
+                        <h2>Don't just take our</h2>
+                        <div class="d-none d-lg-block divider-38"></div>
+                        <p class="mt-20">We are proud to say that since our opening in ’98 we have been
+                            serving our
+                            visitors in the best possible way. In Hotel Nanovi, where </p>
+                        <div class="d-none d-lg-block divider-43"></div>
+                        <a href="#" class="btn btn-maincolor">Find News</a>
+                    </div>
+                </div>
+            </div>
+            <div class="divider-40 d-none d-md-block"></div>
+        </div>
+    </section>
+
+
+    <section class="s-pt-55 s-pb-60 s-pt-lg-95 s-pb-lg-100 ls">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {#                    <h6 class="special-heading fw-300 text-center">Empower Yourself</h6>#}
+                    <h2 class="text-center">Popular News</h2>
+                    <div class="divider-40 d-none d-md-block"></div>
+                    <div class="owl-carousel mt-20" data-autoplay="true" data-loop="true"
+                         data-responsive-lg="3"
+                         data-responsive-md="3" data-responsive-sm="2" data-nav="false" data-dots="false">
+                        {% for page in popular_pages %}
+
+
+                            <div class="course-flip h-100 bordered rounded">
+                                <div class="course-front">
+                                    <div class=" vertical-item content-padding">
+                                        <div class="item-media rounded-top"
+                                             style="background-color: #222a35">
+                                            <span class="text-center" style="color: white; display: flex;justify-content: center;align-items: center;
+                                                         font-size: 40px; height: 100%;">
+                                                VAeng
+                                            </span>
+                                        </div>
+                                        <div class="item-content">
+                                            <h6 class="course-title">
+                                                <a href="{{ page.get_absolute_url }}">{{ page.name }}</a>
+                                            </h6>
+
+                                            <div class="star-rating course-rating">
+                                                            <span style="width:91.5%">Rated <strong
+                                                                    class="rating">4.00</strong> out of 5</span>
+                                            </div>
+
+                                            <div class="tagcloud">
+                                                {% for tag in page.tags.all %}
+                                                    <a href="{{ tag.get_pages_url }}"
+                                                       class="tag-cloud-link">
+                                                        {{ tag.name }}
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="course-back rounded vertical-item content-padding ds">
+                                    <div class="item-content">
+                                        <h6 class="course-title">
+                                            <a href="{{ page.get_absolute_url }}">{{ page.name }}</a>
+                                        </h6>
+                                        <p>
+                                            {{ page.content|striptags|truncatechars:100 }}
+                                        </p>
+                                        <div class="star-rating course-rating">
+                                        <span style="width:91.5%">Rated <strong
+                                                class="rating">4.00</strong> out of 5</span>
+                                        </div>
+                                        <div class="divider-48"></div>
+                                        <div class="tagcloud">
+                                            <a href="#" class="tag-cloud-link">
+                                                Technology
+                                            </a>
+                                            <a href="#" class="tag-cloud-link">
+                                                Humanities
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="s-pt-60 s-pb-50 s-pt-lg-90 s-pb-lg-80 ls ms text-center text-md-left">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="intro_layer animate animated fadeInRight" data-animation="fadeInRight">
+                        <h2 class="call-title">
+                            Can’t find what you are looking for?
+                        </h2>
+                        <p class="fs-20">
+                            Submit a ticket and we'll get back to you as soon as we can.
+                        </p>
+                        <form role="search" method="get" class="search-form search-course" action="/">
+                            <div class="form-group has-placeholder">
+                                <label for="search-form-widget">
+                                    <span class="screen-reader-text">Search for:</span>
+                                </label>
+                                <i class="fa fa-search"></i>
+                                <input type="search" id="search-form-widget"
+                                       class="search-field form-control"
+                                       placeholder="" value="" name="search">
+                                <button type="submit" class="search-submit btn btn-maincolor">Find courses
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider-3"></div>
+    </section>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        let search_city_input = document.getElementById('search_city_input');
+        let cities = [{% for city in cities %}{'name': '{{ city.name }}','slug': '{% url 'app:city_detail' city.slug %}'
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+        let cities_list = document.getElementById('cities_list');
+        let new_cities_list = ''
+        search_city_input.addEventListener('input', function () {
+            search_cities(this.value)
+        })
+
+        function search_cities(value) {
+            console.log(value)
+            new_cities_list = ''
+            cities.forEach(
+                (item) => {
+                    if (item.name.toLowerCase().includes(value.toLowerCase())) {
+                        let city_elem = `<a href="${item.slug}" class="link">${item.name}</a> `
+                        new_cities_list = new_cities_list + city_elem;
+                    }
+                }
+            )
+            cities_list.innerHTML = new_cities_list;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags static %}
+
+{% block title %}
+    {{ query.name }}
+{% endblock %}
+
+
+{% block style %}
+    <script>document.getElementsByTagName("html")[0].className += " js";</script>
+    <style>
+        .cd-faq__trigger {
+            color: inherit;
+        }
+    </style>
+    {% if query.faq and query.faq.questions %}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+          {% for question in query.faq.questions.all|slice:"3" %}
+              {
+                "@type": "Question",
+                "name": "{{ question.question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ question.answer }}"
+                }
+              }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          ]
+        }
+        </script>
+    {% endif %}
+
+    <style>
+        .place_img {
+            width: 300px !important;
+            min-width: 300px !important;
+            height: 200px !important;
+            max-height: 100%;
+            margin-right: 20px;
+            border-radius: 5px
+        }
+    </style>
+    <style>
+        @media (max-width: 630px) {
+            .place {
+                flex-direction: column !important;
+            }
+
+            .place_img {
+                margin-bottom: 10px;
+                width: 100% !important;
+                min-width: auto !important;
+                height: auto !important;
+            }
+
+            .top_place_number {
+                display: none;
+            }
+
+
+        }
+    </style>
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:queries' %}">Places</a></li>
+            <li class="is-active"><a href="">{{ query.name }}</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="modal" id="modal">
+        <div class="modal-background" onclick="closeModal()"></div>
+        <div class="modal-content" id="modal_content">
+
+        </div>
+        <button class="modal-close is-large" onclick="closeModal()" aria-label="close"></button>
+    </div>
+
+    <h1 class="block_title" style="font-size: 22px !important;">
+        {% if request.user|hasGroup:'Admin' %}
+            <div class="queries_admin_button">
+                <a href="{% url 'parsing:query_edit' query.slug %}"
+                   title="E0dit"
+                   class="button is-success is-light is-outlined centered mr-1"
+                   style="width: fit-content"><i class="fa fa-edit"></i></a>
+                <a href="{% url 'parsing:query_edit_faq' query.slug %}"
+                   title="FAQ"
+                   class="button is-warning is-light is-outlined centered mr-1"
+                   style="width: fit-content"><i class="fa fa-question"></i></a>
+                <a href="{% url 'parsing:query_reviews_uniqueize' query.slug %}"
+                   title="Uniqueize reviews"
+                   class="button is-info is-light is-outlined centered mr-1"
+                   style="width: fit-content"><i class="fa fa-comment-alt"></i></a>
+                <a href="{% url 'parsing:query_places_generate_description' query.slug %}"
+                   title="Generate Description"
+                   class="button is-primary is-light is-outlined centered mr-1"
+                   style="width: fit-content"><i class="fa fa-folder"></i></a>
+                <a href="{% url 'parsing:query_rating_edit' query.slug %}"
+                   title="Change rating"
+                   class="button is-outlined"
+                   style="display: block; width: fit-content "><i class='fa fa-star'></i></a>
+            </div>
+        {% endif %}
+        {{ query.name }}
+        <div class="queries_copy_button">
+            <a href="{% url 'parsing:places_copy' query.slug %}"><i class="fa fa-link"></i></a>
+            <a href="{% url 'parsing:places_copy_code' query.slug %}"><i class="fa fa-copy"></i></a>
+            {#            <span><i class="fa fa-copy query_clone_icon" data-query-slug="{{ query.slug }}"></i></span>#}
+        </div>
+    </h1>
+
+    <hr>
+    <div class="columns is-centered">
+        <div class="column is-10">
+            {#            <h4 style="text-align: center">Description</h4>#}
+
+            <div>
+                {{ query.content|isValue:'<span style="color: grey; margin: 10px auto; display: block; width: fit-content;">Description not found</span>'|safe }}
+            </div>
+            <br>
+            <div>
+                {% for tag in query.tags.all %}
+                    <span class="tag is-medium"
+                          style="margin: 3px; background-color: grey; color: white">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="columns is-centered is-multiline">
+        {% for place in top_places %}
+            {% include 'parsing/include/place/preview_card.html' with query=query place=place %}
+        {% endfor %}
+    </div>
+    <hr>
+
+    <h4 class="block_title">All places</h4>
+    <div class="columns is-multiline">
+        {% for letter in letters %}
+            <div class="column is-3">
+                <hr>
+                <span style="color: cornflowerblue">{{ letter }}</span>
+                {% for place in places_letter|getValue:letter|getValue:'places' %}
+                    <p><a href="{% url 'parsing:query_place_detail' query.slug place.slug %}"
+                          class="hover_link">{{ place.name }}</a></p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <div style="color: grey">
+        <p>Total {{ places.count }} places</p>
+    </div>
+    {% if query.faq %}
+        {% include 'parsing/include/faq/block.html' with questions=query.faq.questions %}
+    {% endif %}
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'parsing/faq/js/util.js' %}"></script>
+    <script src="{% static 'parsing/faq/js/main.js' %}"></script>
+    <script src="{% static 'parsing/js/copy_place.js' %}"></script>
+{% endblock %}

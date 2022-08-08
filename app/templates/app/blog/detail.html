@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if blog.title %}
+        {{ blog.title }}
+    {% else %}
+        {{ blog.name }}
+    {% endif %}
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+{% block head %}
+    {% if blog.faq and blog.faq.questions %}
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+          {% for question in blog.faq.questions.all|slice:"3" %}
+              {
+                "@type": "Question",
+                "name": "{{ question.question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ question.answer }}"
+                }
+              }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          ]
+        }
+        </script>
+    {% endif %}
+    <meta name="description" content="{{ blog.meta|default:blog.name }}">
+{% endblock %}
+
+{% block content_section %}
+    <section class="ls s-pt-60 s-pb-30 s-pt-lg-100 s-pb-lg-50 c-gutter-0">
+        <div class="container mt-30">
+            {% if request.user.is_superuser or blog.user == request.user %}
+                <div style="margin: 10px auto; display: flex; justify-content: center; align-items: center">
+                    <a href="{% url 'app:blog_edit' blog.slug %}" class="btn btn-outline-warning">Edit</a>
+                    <span style="margin: 0px 10px"></span>
+                    <a href="{% url 'app:blog_edit_faq' blog.slug %}" class="btn btn-outline-info">FAQ</a>
+                    {#                    <span style="margin: 0px 10px"></span>#}
+                    {#                    <a href="{% url 'app:blog_delete' blog.slug %}" class="btn btn-outline-danger">Delete</a>#}
+                    <span style="margin: 0px 10px"></span>
+                    <a href="{% url 'app:blog_change_archive' blog.pk %}"
+                       class="btn btn-outline-{% if blog.archive %}success{% else %}danger{% endif %}">
+                        {% if blog.archive %}Publish{% else %}Archive{% endif %}</a>
+                </div>
+            {% endif %}
+            <div class="offset-lg-1 col-lg-10">
+                <div class="item-media rounded post-thumbnail">
+                    {% if blog.img %}
+                        <img src="{{ blog.img.url }}" alt="">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ls s-pb-60 s-pb-lg-100 c-gutter-50">
+        <div class="container">
+            <div class="row">
+                <main class="offset-lg-1 col-lg-10">
+                    <article
+                            class="vertical-item post type-post status-publish format-standard has-post-thumbnail single-post">
+
+                        <!-- .post-thumbnail -->
+
+
+                        <div class="item-content">
+                            <header class="entry-header">
+                                <h2>{{ blog.name }}</h2>
+                                <span class="author vcard fs-18">
+											<span>By:</span>
+											<a class="url fn n"
+                                               href="">{{ blog.user.last_name }} {{ blog.user.first_name }}</a>
+										</span>
+                                <div class="entry-meta">
+											<span class="byline">
+												<span class="posted-on">
+													<a class="grey-link" href="#">
+														<i class="color-main icon-m-calendar-alt"></i>
+														<time class="entry-date published updated"
+                                                              datetime="2018-01-03T10:11:37+00:00">{{ blog.date_create }}</time>
+													</a>
+												</span>
+												<span>
+													<i class="color-main fa fa-eye"></i>
+													500
+												</span>
+												<span class="comment-count">
+													<a class="grey-link" href="#comments">
+														<i class="color-main icon-m-comment-alt"></i>
+														{{ blog.reviews.count }}
+													</a>
+												</span>
+											</span>
+                                </div>
+                                <div class="tagcloud">
+                                    {% for tag in blog.tags.all %}
+                                        <a href="{{ tag.path }}" class="tag-cloud-link">
+                                            {{ tag.name }}
+                                        </a>
+                                    {% endfor %}
+
+                                </div>
+                                <!-- .entry-meta -->
+                            </header>
+
+                            <div class="entry-content">
+                                {{ blog.content|safe }}
+                            </div>
+                            <div>
+                                {% if blog.faq %}
+                                    {% include 'parsing/include/faq/block.html' with questions=blog.faq.questions.all %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- .item-content -->
+                    </article>
+                    {% include 'app/include/comments.html' with reviews=blog.reviews.all %}
+                </main>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

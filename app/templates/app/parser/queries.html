@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Мои запросы
+{% endblock %}
+
+{% block style %}
+    <style>
+    </style>
+{% endblock %}
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h1>Places</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="">Places</a>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content_section %}
+    <section class="ls s-pt-55 s-pb-60 s-pb-lg-100 container-px-30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+{#                    <a href="{% url 'app:query_add' %}" class="btn btn-outline-info" style="margin: 0 auto; right: 20px; display: block; width: fit-content; position: absolute;">+</a>#}
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 col-xl-5">
+                            <div class="filters gallery-filters text-lg-right">
+                                <a href="#" data-filter="*" class="active selected">All</a>
+                                {% for tag in tags %}
+                                    <a href="#" data-filter=".tag_{{ tag.id }}">{{ tag.name }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row isotope-wrapper masonry-layout c-mb-30" data-filters=".gallery-filters">
+                        {% for query in queries %}
+                            <div class="col-xl-3 col-sm-6 {% for tag in query.tags.all %}tag_{{ tag.id }} {% endfor %}">
+
+                                <div class="vertical-item gallery-item gallery-item text-center content-padding box-shadow rounded"
+                                style="min-height: 400px !important;">
+                                    <div class="item-media rounded-top">
+                                        <img src="{{ query.base_img }}" alt="" style="height: 250px !important;">
+                                        <div class="media-links">
+                                            <a class="abs-link" title=""
+                                               href="{% url 'app:query_places' query.slug %}"></a>
+                                        </div>
+                                    </div>
+                                    <div class="item-content">
+                                        <h6 class="gallery-title">
+                                            <a href="{% url 'app:query_places' query.slug %}">{{ query.name }}</a>
+                                        </h6>
+                                        <div class="tagcloud">
+                                            {% for tag in query.tags.all %}
+                                                <a href="#">{{ tag.name }}</a>
+                                            {% endfor %}
+                                        </div>
+                                        <p>{{ query.places_count }}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- .isotope-wrapper-->
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if page.title %}
+        {{ page.title }}
+    {% else %}
+        {{ page.name }}
+    {% endif %}
+{% endblock %}
+
+{% block head %}
+    {% if page.meta %}
+        <meta name="description" content="{{ page.meta|safe }}">
+    {% endif %}
+{% endblock %}
+
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h1>{{ page.name }}</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ page.category.get_absolute_url }}">{{ page.category.name.capitalize }}</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">{{ page.name.capitalize }}</a>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block content_section %}
+    <div class="modal fade sigin-form text-center" id="form3" tabindex="-1" role="dialog" aria-labelledby="formsign"
+         aria-hidden="true">
+        <div class="modal-dialog ls">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div class="modal-body">
+                    <div class="form-title">
+                        <h2>Deletion</h2>
+                        <p>Are you sure you want to delete this page?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row justify-content-between w-100 p-15">
+                            <div class="columns-3">
+                                <a href="#" class="btn btn-outline-darkgrey"  data-dismiss="modal">
+                                    Cancel
+                                </a>
+                            </div>
+                            <div class="columns-4">
+                                <a href="{% url 'app:page_delete' page.id %}" class="btn btn-danger text-white">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="ls s-py-50 c-gutter-60">
+        <div class="container">
+            {% if request.user.is_superuser %}
+                <div style="margin: 10px auto; display: flex; justify-content: center; align-items: center">
+                    <a href="{% url 'app:page_edit' page.id %}" class="btn btn-outline-warning">Edit</a>
+                    <span style="margin: 0px 10px"></span>
+                    {#                    <a href="{% url 'app:page_delete' page.id %}" class="btn btn-outline-danger">Delete</a>#}
+                    {#                    <button type="button" class="login-btn-form login_modal_window" data-toggle="modal"#}
+                    {#                            data-target="#form1"><i class="fs-16 fa fa-user" aria-hidden="true"></i>Login#}
+                    {#                    </button>#}
+                    <a href="#" class="btn btn-outline-danger login_modal_window" data-toggle="modal"
+                       data-target="#form3">Delete</a>
+                </div>
+            {% endif %}
+            <div class="row">
+
+                <div class="d-none d-lg-block divider-70"></div>
+
+                <main class="offset-lg-1 col-lg-10">
+                    <article
+                            class="vertical-item content-padding rounded post type-event status-publish format-standard has-post-thumbnail events-post bordered">
+                        <div class="item-media post-thumbnail rounded-top">
+                            <img src="images/gallery/04.jpg" alt="">
+                        </div>
+                        <!-- .post-thumbnail -->
+
+                        <div class="item-content">
+                            <div class="entry-meta item-meta color-darkgrey mb-20">
+                                {#                                <i class="fa fa-calendar color-main"></i> <span>{{ page.date_create }}</span>#}
+                                {#                                <i class="fa fa-map-marker color-main"></i> <span>{{ page.name }}</span>#}
+                                <div class="tagcloud">
+                                    {% for tag in page.tags.all %}
+                                        <a href="{{ tag.path }}" class="tag-cloud-link">
+                                            {{ tag.name }}
+                                        </a>
+                                    {% endfor %}
+
+                                </div>
+                                {#										<i class="fa fa-clock-o color-main"></i> <span>01:15 pm - 05:30 pm</span>#}
+                            </div>
+                            <!-- .entry-meta -->
+                            <hr>
+
+                            <div class="entry-content">
+                                {% if page.content %}
+                                    {{ page.content|safe }}
+                                {% else %}
+                                    Content not found
+                                {% endif %}
+                                <br>
+                                {#                                {% if page.url %}#}
+                                {#                                    <span style="color: grey"><a href="https://vaeng.com{{ page.url }}">source: https://vaeng.com{{ page.url }}</a></span>#}
+                                {#                                {% endif %}#}
+                            </div>
+                            <!-- .entry-content -->
+
+                        </div>
+                        <!-- .item-content -->
+                    </article>
+
+
+                    {% include 'app/include/comments.html' with reviews=page.reviews.all %}
+
+
+                </main>
+
+                <div class="d-none d-lg-block divider-70"></div>
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}

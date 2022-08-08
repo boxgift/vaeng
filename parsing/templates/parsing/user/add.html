@@ -1,0 +1,62 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Registration
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" class="custom_form">
+          <span class="form_title">Registration</span>
+          {% csrf_token %}
+        <div class="field">
+            <label for="" class="label">
+                Username
+            </label>
+            <div class="control">
+                <input type="text" class="input" required name="username">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Last name
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="last_name">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                First name
+            </label>
+            <div class="control">
+                <input type="text" class="input" name="first_name">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Email
+            </label>
+            <div class="control">
+                <input type="email" class="input" required name="email">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Password
+            </label>
+            <div class="control">
+                <input type="password" class="input" required name="password1">
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">
+                Repeat password
+            </label>
+            <div class="control">
+                <input type="password" class="input" required name="password2">
+            </div>
+        </div>
+        <button type="submit" class="button is-info">Register now</button>
+        <a href="{% url 'login' %}" class="centered_link">Login</a>
+    </form>
+{% endblock %}

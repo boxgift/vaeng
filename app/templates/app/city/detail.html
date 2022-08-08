@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ city.name }}
+{% endblock %}
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ city.name }}</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <span>{{ city.name }}</span>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block head %}
+    <meta name="description" content="{{ city.description|default:city.name }}">
+    <style>
+        .services {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .service {
+            margin-bottom: 10px;
+        }
+
+        .service .link {
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            color: #5ba40f;
+            transition: all .3s ease-in;
+        }
+
+        .service .link:hover {
+            background: #5ba40f;
+            color: white;
+        }
+
+        .city_name {
+            position: absolute;
+            color: #000000;
+            background: #ffffffc4;
+            border-top-left-radius: 12px;
+            padding: 4px 10px;
+            font-size: 22px !important;
+        {#margin: 1px;#} letter-spacing: 2px;
+            font-style: normal !important;
+            border-bottom-right-radius: 15px;
+        }
+    </style>
+{% endblock %}
+
+{% block content_section %}
+    <section class="ls s-pt-55 s-pb-15 s-pt-lg-95 s-pb-lg-30 c-gutter-10 c-mb-20 category-section">
+        <div class="container">
+            <div class="mt-30 row">
+                <div class="col-12 col-lg-3">
+                    <span class="city_name">{{ city.name }}</span>
+                    {% if city.cloud_img %}
+                        <img src="{{ city.cloud_img.get_default_img }}"
+                             style="height: auto !important; border-radius: 15px; width: auto !important"
+                             alt="{{ city.name }}">
+                    {% else %}
+                        <span style="height: 300px !important; border-radius: 15px; width: 100%; font-size: 40px; display: flex;
+                 justify-content: center;align-items: center; border: 1px solid gray; background: #6194e9;
+                 letter-spacing: 10px;color: white">
+                404
+                </span>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-lg-9">
+                    <h3 style="font-size: 20px">Description</h3>
+                    <div class="pl-2">
+                        {{ city.description }}
+                        <br>
+                        <p><b>Population</b>: {{ city.population }}</p>
+                        <p><b>Coordinate:</b> {{ city.latitude }}, {{ city.longitude }}</p>
+                        <p><b>Zip codes</b>:
+                            {% for zip_code in city.zip_codes %}
+                                {{ zip_code }}
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}</p>
+                    </div>
+                    <h3 style="font-size: 20px">Services</h3>
+                    <ol class="row pl-2">
+                        {% for city_service in city_services %}
+                            <li class="col-4">
+                                <a href="{% url 'app:city_service_detail' city_service.city.slug city_service.service.slug %}"
+                                   class="link" style="font-size: 14px">
+                                    {{ city_service.service.name }}
+                                    <span class="has-text-dark">
+                                ({{ city_service.exact_count }}/{{ city_service.places_count }})
+                            </span>
+                                </a>
+                            </li>
+                        {% empty %}
+                            <span class="has-text-gray">
+                        Services not found
+                    </span>
+                        {% endfor %}
+
+                    </ol>
+                    <h3 style="font-size: 20px">Nearest cities</h3>
+                    {% if nearest_cities %}
+                        <ol class="row pl-2">
+                            {% for city in nearest_cities %}
+                                <li class="col-4"><a href="{% url 'app:city_detail' city.slug %}"
+                                                     class="link">{{ city.name }}</a></li>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

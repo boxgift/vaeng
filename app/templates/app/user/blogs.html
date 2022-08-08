@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Cabinet
+{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'app/css/shop.css' %}" class="color-switcher-link">
+{% endblock %}
+
+{% block title_section %}
+
+{% endblock %}
+
+
+{% block content_section %}
+    <section class="ls s-pt-55 s-pb-60 s-pt-lg-95 s-pb-lg-100 shop-details">
+        <div class="container">
+            <div class="row">
+                <main class="col-lg-12">
+                    <article>
+                        <header class="entry-header">
+                            <h4>Blogs
+                            </h4>
+                        </header>
+                        <!-- .entry-header -->
+                        <div class="entry-content">
+                            <div class="woocommerce">
+                                <nav class="woocommerce-MyAccount-navigation ls ms">
+                                    <ul>
+                                        <li class="is-active">
+                                            <a href="{% url 'app:my_blogs' %}">
+                                                <p>Blogs</p>
+                                            </a>
+                                        </li>
+                                        {#                                        <li>#}
+                                        {#                                            <a href="{% url 'app:profile' %}">#}
+                                        {#                                                <p>News</p>#}
+                                        {#                                            </a>#}
+                                        {#                                        </li>#}
+
+
+                                        <li>
+                                            <a href="{% url 'app:profile' %}">
+                                                <p>Account details</p>
+                                            </a>
+                                        </li>
+                                        {#                                        <li>#}
+                                        {#                                            <a href="{% url 'app:create_pages' %}">#}
+                                        {#                                                <p>Start parsing</p>#}
+                                        {#                                            </a>#}
+                                        {#                                        </li>#}
+                                        <li>
+                                            <a href="{% url 'logout' %}">
+                                                <p>Logout</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+
+
+                                <div class="woocommerce-MyAccount-content">
+                                    <a href="{% url 'app:blog_create' %}" style="display: flex; justify-content: end">
+                                        <i class="fa fa-plus"
+                                           style="padding: 10px 20px; border-radius: 10px; border: 1px solid #5caf01; color: #5caf01"></i>
+                                    </a>
+                                    <table class="woocommerce-MyAccount-downloads shop_table shop_table_responsive">
+                                        <thead>
+                                        <tr>
+                                            <th class="download-product">
+                                                <span class="nobr">Blog</span>
+                                            </th>
+                                            <th class="download-remaining">
+                                                <span class="nobr">Reviews count</span>
+                                            </th>
+                                            <th class="download-remaining">
+                                                <span class="nobr">Archive</span>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for blog in blogs %}
+                                            <tr>
+                                                <td class="download-product" data-title="Product">
+                                                    <a href="{{ blog.get_absolute_url }}">
+                                                        {{ blog.name }}
+                                                    </a>
+                                                </td>
+                                                <td class="download-remaining" data-title="Downloads remaining">
+                                                    {{ blog.reviews.count }}
+                                                </td>
+                                                <td class="download-remaining" data-title="Downloads remaining">
+                                                    {% if blog.archive %}
+                                                        <span style="color: orangered"> Archive </span>{% else %}
+                                                        <span style="color: #00d1b2"> Publish</span>{% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% if blogs %}
+                                        {% include 'app/include/pagination.html' with pages=blogs %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .entry-content -->
+                    </article>
+
+                </main>
+            </div>
+            <div class="divider-3"></div>
+        </div>
+    </section>
+
+{% endblock %}

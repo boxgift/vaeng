@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Login
+{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'app/css/shop.css' %}" class="color-switcher-link">
+{% endblock %}
+
+{% block title_section %}
+    <section class="page_title ds s-pt-80 s-pb-80 s-pt-lg-130 s-pb-lg-90">
+        <div class="divider-50"></div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h1>Account - Login</h1>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app:index' %}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Account - Login
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block content_section %}
+    <section class="ls s-pt-55 s-pb-55 s-pt-lg-95 s-pb-lg-95">
+        <div class="container">
+            <div class="row">
+                <main class="col-lg-12">
+                    <article>
+                        <!-- .entry-header -->
+                        <div class="entry-content">
+                            <div class="woocommerce">
+
+                                <!--
+    <div class="woocommerce-message">Are you sure you want to log out? <a
+        href="shop-account-login.html">Confirm and log out</a>
+    </div>
+    -->
+
+                                <form class="woocomerce-form woocommerce-form-login login text-center" method="post">
+                                    {% csrf_token %}
+                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                        <label for="username">Username or email address <span class="required">*</span>
+                                        </label>
+                                        <input type="text"
+                                               class="woocommerce-Input woocommerce-Input--text input-text text-center"
+                                               name="username" id="username" value=""
+                                               placeholder="Username or email address">
+                                    </p>
+                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                        <label for="password">Password <span class="required">*</span>
+                                        </label>
+                                        <input class="woocommerce-Input woocommerce-Input--text input-text text-center"
+                                               type="password" name="password" id="password" placeholder="Password">
+                                    </p>
+
+                                    <p class="form-row">
+                                        <input type="submit" class="woocommerce-Button button" name="login"
+                                               value="Login">
+                                        <label class="woocommerce-form__label woocommerce-form__label-for-checkbox inline">
+                                            <input class="woocommerce-form__input woocommerce-form__input-checkbox"
+                                                   name="rememberme" type="checkbox" id="rememberme" value="forever">
+                                            <span>Remember me</span>
+                                        </label>
+                                    </p>
+                                    <p class="woocommerce-LostPassword lost_password">
+                                        <a href="shop-account-password-reset.html">Lost your password?</a>
+                                    </p>
+
+                                </form>
+                            </div>
+                        </div>
+                        <!-- .entry-content -->
+                    </article>
+
+
+                </main>
+            </div>
+        </div>
+    </section>
+{% endblock %}

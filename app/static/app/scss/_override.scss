@@ -1,0 +1,210 @@
+/*
+** Bootstrap Overrides
+*/
+@import 'override_bootstrap/breadcrumbs';
+@import 'override_bootstrap/forms';
+@import 'override_bootstrap/carousel';
+@import 'override_bootstrap/tabs';
+@import 'override_bootstrap/collapse';
+@import 'override_bootstrap/dropdowns';
+
+//making container 1170px width for wide screens
+@media (min-width: 1300px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+//other bootstrap elements
+/* modal */
+.modal-open {
+  padding-right: 0 !important;
+}
+
+.modal-backdrop.show {
+  background-color: $darkColor;
+  opacity: 0.7;
+}
+
+.modal-content {
+  border-radius: 5px;
+  [class*="col-"]:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* bootstrap buttons */
+.btn {
+  border-width: 2px;
+  font-size: 18px;
+  padding: 8px 23px;
+  border-radius: 5px;
+  //for icons
+  &.round,
+  &.rounded {
+    padding: 23px;
+    line-height: 1;
+  }
+}
+
+/* media elements */
+.media > img {
+  display: block;
+}
+
+.media-body {
+  h6, h5, h4 {
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+
+  * + &,
+  & + * {
+    margin-left: 28px;
+  }
+}
+
+//for media component inside table - for dashboard
+td .media-body {
+  width: auto;
+}
+
+// our custom video placeholser
+.embed-responsive-3by2 {
+  //height property removed in v4
+  height: 0;
+  padding-bottom: 44.666%;
+  background-color: #000;
+}
+
+.embed-placeholder {
+  &:after {
+    transition: all 0.3s ease-in-out;
+    content: "\e900";
+    font-family: 'icomoon';
+    position: absolute;
+    color: $lightColor;
+    font-size: 70px;
+    line-height: 56px;
+    text-align: center;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    margin-left: -30px;
+    margin-top: -30px;
+  }
+  &:hover:after {
+    color: $colorMain2;
+  }
+}
+
+.alert {
+  border-radius: 0;
+  border-width: 0 0 0 4px;
+  padding: 30px;
+  margin-bottom: 40px;
+}
+
+.mark, mark {
+  background-color: transparent;
+}
+
+button.close {
+  min-width: 0;
+}
+
+/* small in headings */
+.h1 .small,
+.h1 small,
+.h2 .small,
+.h2 small,
+.h3 .small,
+.h3 small,
+.h4 .small,
+.h4 small,
+.h5 .small,
+.h5 small,
+.h6 .small,
+.h6 small,
+h1 .small,
+h1 small,
+h2 .small,
+h2 small,
+h3 .small,
+h3 small,
+h4 .small,
+h4 small,
+h5 .small,
+h5 small,
+h6 .small,
+h6 small {
+  color: inherit;
+  font-weight: 300;
+}
+
+/* labels */
+.label-success {
+  color: $lightColor;
+  background-color: $colorSuccess;
+}
+
+.label-info {
+  color: $lightColor;
+  background-color: $colorInfo;
+}
+
+.label-warning {
+  color: $lightColor;
+  background-color: $colorWarning;
+}
+
+.label-danger {
+  color: $lightColor;
+  background-color: $colorDanger;
+}
+
+/*progress bars*/
+p + .progress {
+  margin-top: -10px;
+}
+
+.progress {
+  background-color: #e5e5e5;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  height: 4px;
+  margin-bottom: 25px;
+  margin-top: 2px;
+  overflow: visible;
+  position: relative;
+}
+
+.progress:last-child {
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  border-radius: 5px;
+  box-shadow: none;
+  color: inherit;
+  height: 4px;
+}
+
+.progress-bar span {
+  color: $darkColor;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  position: absolute;
+  right: 0;
+  top: -17px;
+}
+
+.progress-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}

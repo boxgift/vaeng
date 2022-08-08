@@ -1,0 +1,43 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags %}
+{% block title %}
+    Cities
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="#">City</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+    {% if request.user|hasGroup:"Redactor" %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" class="input" style="width: 430px" name="name">
+            <button type="submit" class="button is-success text-center">
+                create
+            </button>
+            <a href="{% url 'parsing:city_autocreate' %}" type="submit" class="button is-warning text-center">
+                autocreate
+            </a>
+            <a href="{% url 'parsing:city_img_autocreate' %}" type="submit" class="button is-warning text-center">
+                autocreate img
+            </a>
+        </form>
+    {% endif %}
+    <div class="columns is-multiline mt-3">
+        {% for city in cities %}
+            {% include 'parsing/include/city/preview_card.html' with city=city %}
+        {% empty %}
+            <span class="has-text-grey">City not found</span>
+        {% endfor %}
+    </div>
+{% endblock %}

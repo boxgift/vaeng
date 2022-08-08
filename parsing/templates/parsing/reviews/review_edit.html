@@ -1,0 +1,14 @@
+{% extends 'parsing/base.html' %}
+{% load parsing_tags static %}
+
+{% block title %}
+    {{ review.text|truncatechars:20 }}
+{% endblock %}
+
+{% block content %}
+    {% include 'parsing/include/review/form.html' %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'parsing/js/rating_check.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,60 @@
+<h4 class="block_title">
+    {% if review %}
+        Change review to <a href="{{ review.place.get_absolute_url }}" class="link">{{ review.place.name }}</a>
+    {% else %}
+        Write review to <a href="{{ place.get_absolute_url }}" class="link">{{ place.name }}</a>
+    {% endif %}
+</h4>
+<div class="columns is-centered mt-4">
+    <div class="box column is-8">
+        <form action="" method="post">
+            {% csrf_token %}
+            {% if not review_types %}
+                <div class="rating-area" style="margin: 10px auto">
+                    {% for number in '54321'|make_list %}
+                        <input type="radio" id="rating_{{ number }}"
+                               name="rating" value="{{ number }}"
+                               {% if review.rating == number|add:'0' %}checked{% endif %}>
+                        <label for="rating_{{ number }}" title="Rating «{{ number }}»"></label>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <span class="base_rating_area"><span id="base_rating">1</span></span>
+                <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; width: 80%; margin: auto">
+                    {% for review_type in review_types %}
+                        <div style="border: 1px solid darkgray; border-radius: 5px;padding: 10px; margin: 10px;">
+                            <span style="color: grey; font-size: 11px; border-bottom: 1px solid darkgray; width: 100%; display: block">{{ review_type.name }}</span>
+                            <div class="rating-area" style="height: 30px; margin-left: 0px; width: fit-content">
+
+                                {% for number in '54321'|make_list %}
+                                    <input type="radio" id="rating_{{ number }}_{{ review_type.id }}"
+                                           name="review_type_{{ review_type.id }}" value="{{ number }}"
+                                           {% if number == '1' and not review_parts %}checked{% endif %}
+                                            {% if review_parts %}
+                                                {% for review_part in review_parts %}
+                                                    {% if review_part.review_type == review_type.id and review_part.rating == number|add:'0' %}
+                                           checked
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                    >
+                                    <label for="rating_{{ number }}_{{ review_type.id }}"
+                                           title="Оценка «{{ number }}»"></label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            Leave feedback as:
+            {% if review %}<a href="{% if review.user %}{% url 'parsing:public_cabinet' review.user.id %}{% endif %}"
+                              class="link">{{ review.get_user_name }}</a>{% else %}{{ request.user.last_name }}
+                {{ request.user.first_name }}{% endif %}
+            <textarea name="text" class="textarea" id="" cols="" rows="8">{% if review %}{{ review.text }}{% endif %}</textarea>
+            <button type="submit" class="button is-info block_centered">Send</button>
+            {% if review %}
+                <a href="{% url 'parsing:review_uniqueize' review.id %}" class="link">Uniqueize</a>
+            {% endif %}
+        </form>
+    </div>
+</div>

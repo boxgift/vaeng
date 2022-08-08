@@ -1,0 +1,25 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Edit FAQ
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li><a href="{% url 'parsing:city_list' %}">City</a></li>
+            <li><a href="{{ city_service.city.get_absolute_url }}">{{ city_service.city.name }}</a></li>
+            <li><a href="{{ city_service.get_absolute_url }}">{{ city_service.service.name }}</a></li>
+            <li class="is-active"><a href="">FAQ</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h1>
+        FAQ
+    </h1>
+    <span class="has-text-grey">{{ city_service.search_text }}</span>
+    {% include 'parsing/include/faq/form.html' with questions=city_service.faq.questions.all %}
+{% endblock %}

@@ -1,0 +1,94 @@
+.pricing-plan {
+  padding: 40px 40px 10px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  ul {
+    list-style: none;
+    li {
+      padding: 8px 0;
+      i {
+        margin-right: 14px;
+      }
+    }
+  }
+  .price-wrap {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 20px;
+    line-height: 0.7;
+    margin: 45px 0 10px;
+
+    &[class*='bg-'] {
+      padding: 30px 30px 10px;
+      margin-top: 50px;
+      margin-bottom: 0;
+    }
+    .plan-price {
+      font-size: 54px;
+      margin-right: 3px;
+    }
+    .plan-sign {
+      font-size: 30px;
+      position: relative;
+      bottom: 17px;
+      right: 3px;
+    }
+  }
+  [class*='bg-'] {
+    padding: 10px 30px 30px;
+    margin-left: -41px;
+    margin-right: -41px;
+  }
+  .plan-name {
+    &[class*='bg-'] {
+      padding-top: 30px;
+      margin-top: -40px;
+    }
+    h3 {
+      font-size: 36px;
+
+    }
+  }
+
+  @media(min-width: 1200px) {
+    padding: 45px 50px 12px;
+    [class*='bg-'] {
+      margin-left: -61px;
+      margin-right: -61px;
+    }
+    .plan-name[class*='bg-'] {
+      margin-top: -57px;
+    }
+  }
+
+  .plan-features {
+    margin: 36px 0;
+  }
+
+  .plan-button {
+    margin-top: 35px;
+    .btn {
+      padding: 8px 61px
+    }
+  }
+
+  //featured border
+  &.plan-featured {
+    li,
+    .plan-sign,
+    .plan-decimals {
+      color: $fontColor;
+    }
+  }
+}
+
+.price-header {
+  p {
+    margin: 34px 0 17px;
+    @media (max-width: 767px) {
+     margin: 10px 0 0px ;
+    }
+  }
+}

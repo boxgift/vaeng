@@ -1,0 +1,363 @@
+/* forms */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="number"],
+textarea,
+select,
+.form-control {
+  height: 47px;
+  border: 1px solid $colorMain4;
+  background-color: transparent;
+  border-radius: 5px;
+  color: $darkColor;
+  padding-left: 28px;
+  padding-right: 28px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  font-size: 16px;
+  font-weight: 400;
+  width: 100%;
+}
+
+input[disabled] {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+input[type="submit"],
+button {
+  cursor: pointer;
+}
+
+input[type="submit"],
+button {
+  cursor: pointer;
+  border-width: 2px;
+  font-size: 18px;
+  padding: 8px 23px;
+  border-radius: 5px;
+  background: transparent;
+  border: 1px solid $colorMain;
+  color: $darkgreyColor;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: $colorMain;
+    color: $lightColor;
+  }
+
+  .ds &:not([class]), .cs &:not([class]) {
+    border-color: $lightColor;
+    color: $lightColor;
+    &:hover {
+
+    }
+  }
+}
+
+textarea,
+textarea.form-control {
+  padding-top: 11px;
+  height: auto;
+}
+
+.form-group {
+  position: relative;
+
+  [class*='col-'] > & {
+    margin-bottom: 0;
+  }
+
+  [class*='col-'] > & + & {
+    margin-top: 10px;
+  }
+}
+
+.has-placeholder {
+  label {
+    display: none;
+  }
+}
+
+/* select styling */
+select[multiple] {
+  height: auto;
+}
+
+select option,
+.form-control option {
+  color: $darkgreyColor;
+  background-color: $lightColor;
+}
+
+.form-control-unstyled {
+  border: none;
+  background-color: transparent;
+}
+
+.form-control, .form-control:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.form-control.invalid {
+  -webkit-box-shadow: 0 0 0 2px $colorMain;
+  box-shadow: 0 0 0 2px $colorMain;
+}
+
+.form-control:focus {
+  border-color: darken($colorMain4, 10%);
+  background-color: transparent;
+}
+
+.form-control:-moz-placeholder {
+  color: $darkColor;
+  opacity: 1;
+}
+
+.form-control::-moz-placeholder {
+  color: $darkColor;
+  opacity: 1;
+}
+
+.form-control:-ms-input-placeholder {
+  color: $darkColor;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: $darkColor;
+}
+
+.form-control:focus:-moz-placeholder {
+  color: transparent;
+}
+
+.form-control:focus::-moz-placeholder {
+  color: transparent;
+}
+
+.form-control:focus:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-control:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+/*icons for forms */
+form label + [class*="fa-"] {
+  position: absolute;
+  font-size: 18px;
+  left: 15px;
+  top: 60px;
+  width: 1em;
+  text-align: center;
+}
+
+//.has-placeholder class has .form-group elements
+form .has-placeholder label + [class*="fa-"] {
+  top: 15px;
+}
+
+form label + [class*="fa-"] + .form-control {
+  padding-left: 40px;
+}
+
+label {
+  //font-weight: inherit;
+  .checkbox &,
+  .radio & {
+    font-weight: inherit;
+  }
+
+  .checkbox &[for],
+  .radio &[for] {
+    font-weight: inherit;
+  }
+}
+
+.checkbox,
+.radio {
+  label[for] + input[type=checkbox],
+  label[for] + input[type=radio] {
+    left: 20px;
+  }
+}
+
+input[type=checkbox],
+input[type=radio] {
+  margin-top: 8px;
+}
+
+//for wordpress widgets wrapper
+.form-wrapper {
+  &.hero-bg,
+  &.muted-bg,
+  &.cs,
+  &.ds,
+  &.ls {
+    padding: 35px;
+  }
+}
+
+//styled checkboxes and radio
+.has-error .form-control {
+  border-color: $colorMain;
+}
+
+.has-error label,
+.has-error .help-block {
+  color: $colorMain;
+}
+
+/*styled checkbox */
+.checkbox {
+  input[type="checkbox"] {
+    display: none;
+  }
+  label + input[type="checkbox"],
+  label > input[type="checkbox"] {
+    display: inline-block;
+  }
+}
+
+input[type="checkbox"] + label {
+  padding-left: 0;
+}
+
+input[type="checkbox"] + label > a {
+  color: $darkgreyColor;
+}
+
+input[type="checkbox"] + label:before {
+  border-radius: 5px;
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  margin: 1px 8px 4px 0;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  line-height: 14px;
+  font-size: 14px;
+  border: 1px solid $borderColor;
+  font-family: "FontAwesome";
+  padding-top: 2px;
+}
+
+input[type="checkbox"]:checked + label:before {
+  content: "\f111";
+  color: $darkgreyColor;
+}
+
+input[type="checkbox"]:disabled + label:before {
+  background-color: $borderColor;
+}
+
+/*styled radio*/
+.radio {
+  input[type="radio"] {
+    display: none;
+  }
+  label + input[type="radio"],
+  label > input[type="radio"] {
+    display: inline-block;
+  }
+}
+
+input[type="radio"] + label {
+  padding-left: 0;
+}
+
+input[type="radio"] + label > a {
+  color: #999999;
+}
+
+input[type="radio"] + label:before {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-bottom: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid $borderColor;
+}
+
+input[type="radio"]:checked + label:before {
+  padding: 3px;
+  background-color: $darkgreyColor;
+  background-clip: content-box;
+}
+
+input[type="radio"]:disabled + label:before {
+  background-color: $borderColor;
+}
+
+.select_container {
+  position: relative;
+}
+
+.select_container:before {
+  color: $darkColor;
+  content: "\f107";
+  font-family: FontAwesome;
+  font-size: 14px;
+  position: absolute;
+  right: 19px;
+  top: 32%;
+  pointer-events: none;
+}
+
+select {
+ -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+form.search-course {
+
+  margin-top: 42px;
+  i {
+    opacity: 0.4;
+  }
+  @media (max-width: 767px) {
+    margin-top: 20px;
+  }
+  input[type="search"] {
+    max-width: 400px;
+    display: inline-block;
+    margin-right: 5px;
+    border: 2px solid rgba($fontColor, 0.4);
+    @media (max-width: 767px) {
+      max-width: 100%;
+    }
+  }
+  .search-submit {
+    margin-top: -2px;
+    @media (max-width: 767px) {
+      margin-top: 30px;
+    }
+  }
+}
+
+select {
+  padding-left: 11px;
+  padding-right: 40px;
+  padding-top: 11px;
+  padding-bottom: 9px;
+}
+
+[class*='bg-'] {
+  .widget {
+     input {
+      background-color: #fff !important;
+    }
+    .form-control::-webkit-input-placeholder {
+      color: $fontColor;
+    }
+  }
+}

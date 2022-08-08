@@ -1,0 +1,29 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    {{ city.name }} | EDIT
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label for="" class="label">Name</label>
+            <input type="text" class="input" name="name" value="{{ city.name }}">
+        </div>
+        <div class="field">
+            <label for="" class="label">Aliases</label>
+            <input type="text"
+                   class="input" name="aliases"
+                   value="{% for alias in city.aliases %}{{ alias }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+        </div>
+        <div class="field">
+            <label for="" class="label">Description</label>
+            <textarea name="description" id="" cols="30" rows="10"
+                      class="textarea">{{ city.description|default:'' }}</textarea>
+        </div>
+        <button type="submit" class="button">
+            EDIT
+        </button>
+    </form>
+{% endblock %}

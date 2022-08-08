@@ -1,0 +1,40 @@
+{% extends 'parsing/base.html' %}
+{% load static %}
+{% block title %}
+    {{ user.last_name }} {{ user.first_name }}
+{% endblock %}
+
+{% block content %}
+    <div class="box" style="margin: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 500px;
+                align-items: baseline;
+                text-align: center;
+                font-size: 17px;
+">
+        <div style="align-self: center">
+            <img src="
+                {% if user.profile.cloud_img %}
+                    {{ user.profile.cloud_img.get_default_img }}
+                    {% else %}
+                    {% static 'parsing/img/not_avatar.svg' %}
+                {% endif %}
+" alt="" style="width: 200px; height: 200px; border-radius: 100%">
+        </div>
+        <div>
+            Nick: {{ user.username }}
+        </div>
+        <div>
+            Name: {{ user.last_name }} {{ request.first_name }}
+        </div>
+        <div>
+            Email: {{ user.email }}
+        </div>
+        <br>
+        <a href="{% url 'parsing:user_reviews' user.username %}" style="align-self: center" class="button is-outlined">
+          Reviews
+        </a>
+    </div>
+{% endblock %}

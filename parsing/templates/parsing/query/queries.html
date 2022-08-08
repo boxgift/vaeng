@@ -1,0 +1,93 @@
+{% extends 'parsing/base.html' %}
+
+{% load parsing_tags %}
+
+{% block title %}
+    Places
+{% endblock %}
+
+
+{% block style %}
+
+{% endblock %}
+
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:index' %}">Home</a></li>
+            <li class="is-active"><a href="">Places</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+    <div class="icons"
+         style="display: flex;
+    justify-content: end;
+    margin-top: -23px;
+    position: absolute;
+    right: 10px;">
+
+       <span class="icon is-small" id="filter_icon">
+           <i style="color: grey" class="fas fa-filter" aria-hidden="true"></i>
+       </span>
+    </div>
+    <div class="shadow_wrapper" id="shadow_wrapper"></div>
+    <div class="sidebar_filter box" id="sidebar_filter">
+        <span class="icon is-small" id="close_icon">
+            <i class="fa fa-times-circle"></i>
+        </span>
+        <form action="">
+            <div class="field">
+                <label for="" style="display:block;">Search by name</label>
+                <div class="control" style="display: flex">
+                    <input type="text" class="input" name="search" id="name" placeholder="search"
+                           {% if search %}value="{{ search }}"{% else %}{% endif %}>
+                    <button type="submit" class="button is-warning"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <form action="">
+            <label for="">Search by tags</label>
+            <div class="tag_items">
+                {% for tag in tags %}
+                    <div class="tag_item">
+                        <input type="checkbox" id="tag_{{ tag.id }}" style="display: none" name="tags"
+                               value="{{ tag.id }}" {% if tag.id in tags_checked %}checked{% endif %}>
+                        <label for="tag_{{ tag.id }}" class="button is-success is-outlined"
+                               style="margin: 3px">{{ tag.name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="button is-success centered">
+                Search
+            </button>
+        </form>
+    </div>
+    <div class="columns is-multiline">
+        {% for query in queries %}
+            {% include 'parsing/include/query/preview_card.html' with query=query %}
+        {% endfor %}
+    </div>
+
+    {% include 'parsing/include/pagination.html' with page=queries %}
+{% endblock %}
+
+{% block script %}
+    <script>
+        function sidebarShow() {
+            let sidebar = document.getElementById('sidebar_filter');
+            sidebar.classList.toggle('sidebar_show');
+            let wrapper = document.getElementById('shadow_wrapper');
+            wrapper.classList.toggle('wrapper_show')
+        }
+
+        let filter_icon = document.getElementById('filter_icon');
+        filter_icon.addEventListener('click', sidebarShow)
+
+        let close_icon = document.getElementById('close_icon');
+        close_icon.addEventListener('click', sidebarShow)
+    </script>
+{% endblock %}

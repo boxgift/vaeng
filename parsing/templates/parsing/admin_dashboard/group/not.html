@@ -1,0 +1,26 @@
+{% extends 'parsing/base.html' %}
+
+{% block title %}
+    Users without a role
+{% endblock %}
+{% block breadcrumb %}
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'parsing:admin_dashboard' %}">Admin</a></li>
+            <li><a href="{% url 'parsing:group_list' %}">Roles</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Without a role</a></li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+
+    <ul class="list-group">
+        {% for user in users %}
+            <li class="list-group-item between_flex"><a
+                    href="{% url 'parsing:user_detail' user.pk %}">{{ user.username }}</a><span>{{ user.date_joined }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

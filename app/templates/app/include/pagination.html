@@ -1,0 +1,39 @@
+<nav class="navigation pagination mt-3" role="navigation">
+    <h2 class="screen-reader-text">Posts navigation</h2>
+    <div class="nav-links">
+
+        {% if pages.has_previous %}
+            <a class="prev page-numbers" href="?page={{ pages.previous_page_number }}">
+                <i class="fa fa-angle-left"></i>
+                prev
+                <span class="screen-reader-text">Previous page</span>
+            </a>
+            <a class="page-numbers" href="?page={{ pages.previous_page_number }}">
+                <span class="meta-nav screen-reader-text">Page </span>
+                {{ pages.previous_page_number }}
+            </a>
+        {% endif %}
+
+
+
+        <span class="page-numbers current">
+										<span class="meta-nav screen-reader-text">Page </span>
+										{{ pages.number }}
+									</span>
+
+
+        {% if pages.has_next %}
+            <a class="page-numbers" href="?page={{ pages.next_page_number }}">
+                <span class="meta-nav screen-reader-text">Page </span>
+                {{ pages.next_page_number }}
+            </a>
+            <a class="next page-numbers" href="?page={{ pages.next_page_number }}">
+                <span class="screen-reader-text">Next page</span>
+                next
+                <i class="fa fa-angle-right"></i>
+            </a>
+        {% endif %}
+
+
+    </div>
+</nav>
